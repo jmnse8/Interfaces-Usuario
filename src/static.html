@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Normalmente accedes a un CDN; aquí uso una copia local -->
+    <link href="css/bootstrap-5.2.2.css" rel="stylesheet">
+
+    <!-- Esto aparece como título de la ventana o pestaña en el navegador -->
+    <title>CursoManager: Tablas</title>
+</head>
+
+<body>
+
+    <!-- Navbar principal -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CursoManager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#users">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#course">Cursos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#oneUser">Un usuario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#oneEdition">Una edición</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">
+                            (ojo: en este modo <b>no funcionan las acciones</b>)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Div principal; container-fluid expande el contenedor para que ocupe todo el espacio disponible -->
+    <div class="container-fluid cm-main">
+        <div class="row">
+            <div id="users" class="col-md-6 border border-3 rounded">
+                <h4 class="mt-3">Usuarios</h4>
+
+                <div class="row">
+                    <div class="col md-auto input-group">
+                        <input id="search-in-users-input" type="search" class="form-control" placeholder="Filtrar">
+                        <span class="input-group-text" id="search-in-users-button">🔍</span>
+                    </div>
+                    <div class="col text-end">
+                        <button title="Crea un nuevo usuario" class="add-user btn btn-outline-primary">➕</button>
+                    </div>
+                </div>
+
+                <div id="filter-in-users" class="m-2 row p-2 border border-2 rounded">
+                    <input type="search" name="name" class="col-md-8 m-1  form-control form-control-sm" name="" placeholder="Nombre o fragmento">
+                    <input type="search" name="dni" class="col-md-4 m-1 form-control form-control-sm" placeholder="DNI o fragmento">
+                    <input type="search" name="email" class="col-md-6 m-1 form-control form-control-sm" placeholder="correo o fragmento">
+                    <select name="rol" class="col-md-6 m-1 form-select form-select-sm">
+                        <option value="admin">admin</option>
+                        <option value="alumno" selected>alumno</option>
+                        <option value="profesor">profesor</option>
+                    </select>            
+                </div>
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Correo</th>
+                            <th>DNI</th>
+                            <th title="número de ediciones en las que es alumno y/ó profesor">A/P</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tr data-id="0" class="user-table-row">
+                            <td>Fernando Ortiz Ruiz</td>
+                            <td><span class="badge text-bg-warning opacity-50">admin</span></td>
+                            <td>fernandoor@ucm.es</td>
+                            <td>25066706H</td>
+                            <td>0</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d0" title="Muestra las ediciones en las que figura Fernando Ortiz Ruiz"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Fernando Ortiz Ruiz"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Fernando Ortiz Ruiz del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="1" class="user-table-row">
+                            <td>Nuria Rodriguez Jimenez</td>
+                            <td><span class="badge text-bg-warning opacity-50">admin</span></td>
+                            <td>nuriarj@ucm.es</td>
+                            <td>96000964E</td>
+                            <td>0</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d1"
+                                        title="Muestra las ediciones en las que figura Nuria Rodriguez Jimenez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Nuria Rodriguez Jimenez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Nuria Rodriguez Jimenez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="2" class="user-table-row">
+                            <td>Pau Garrido Reyes</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>paugr@ucm.es</td>
+                            <td>88902618M</td>
+                            <td>9</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d2" title="Muestra las ediciones en las que figura Pau Garrido Reyes"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Pau Garrido Reyes"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Pau Garrido Reyes del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="3" class="user-table-row">
+                            <td>Alvaro Peña Nuñez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>alvaropn@ucm.es</td>
+                            <td>66446746E</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d3" title="Muestra las ediciones en las que figura Alvaro Peña Nuñez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Alvaro Peña Nuñez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Alvaro Peña Nuñez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="4" class="user-table-row">
+                            <td>Alvaro Vazquez Soto</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>alvarovs@ucm.es</td>
+                            <td>82819123X</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d4" title="Muestra las ediciones en las que figura Alvaro Vazquez Soto"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Alvaro Vazquez Soto"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Alvaro Vazquez Soto del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="5" class="user-table-row">
+                            <td>Jose Manuel Serrano Blanco</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>jmsb@ucm.es</td>
+                            <td>55615515C</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d5"
+                                        title="Muestra las ediciones en las que figura Jose Manuel Serrano Blanco"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Jose Manuel Serrano Blanco"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Jose Manuel Serrano Blanco del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="6" class="user-table-row">
+                            <td>Pedro Iglesias Santiago</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>pedrois@ucm.es</td>
+                            <td>59330688A</td>
+                            <td>3</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d6"
+                                        title="Muestra las ediciones en las que figura Pedro Iglesias Santiago"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Pedro Iglesias Santiago"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Pedro Iglesias Santiago del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="7" class="user-table-row">
+                            <td>Juan Lorenzo Prieto</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>juanlp@ucm.es</td>
+                            <td>03404620E</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d7" title="Muestra las ediciones en las que figura Juan Lorenzo Prieto"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Juan Lorenzo Prieto"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Juan Lorenzo Prieto del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="8" class="user-table-row">
+                            <td>Miriam Perez Ibañez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>miriampi@ucm.es</td>
+                            <td>78983169L</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d8" title="Muestra las ediciones en las que figura Miriam Perez Ibañez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Miriam Perez Ibañez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Miriam Perez Ibañez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="9" class="user-table-row">
+                            <td>Andres Rubio Suarez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>andresrs@ucm.es</td>
+                            <td>94055390H</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d9" title="Muestra las ediciones en las que figura Andres Rubio Suarez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Andres Rubio Suarez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Andres Rubio Suarez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="10" class="user-table-row">
+                            <td>Francisco Javier Gonzalez Ruiz</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>fjgr@ucm.es</td>
+                            <td>76070927Z</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d10"
+                                        title="Muestra las ediciones en las que figura Francisco Javier Gonzalez Ruiz"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Francisco Javier Gonzalez Ruiz"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Francisco Javier Gonzalez Ruiz del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="11" class="user-table-row">
+                            <td>Carmen Bravo Gomez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>carmenbg@ucm.es</td>
+                            <td>53572624N</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d11" title="Muestra las ediciones en las que figura Carmen Bravo Gomez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Carmen Bravo Gomez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Carmen Bravo Gomez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="12" class="user-table-row">
+                            <td>Alicia Pastor Pascual</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>aliciapp@ucm.es</td>
+                            <td>27435710E</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d12"
+                                        title="Muestra las ediciones en las que figura Alicia Pastor Pascual"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Alicia Pastor Pascual"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Alicia Pastor Pascual del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="13" class="user-table-row">
+                            <td>Jose Moreno Benitez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>josemb@ucm.es</td>
+                            <td>50072454M</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d13" title="Muestra las ediciones en las que figura Jose Moreno Benitez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Jose Moreno Benitez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Jose Moreno Benitez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="14" class="user-table-row">
+                            <td>Jose Manuel Ruiz Sanchez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>jmrs@ucm.es</td>
+                            <td>09081594K</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d14"
+                                        title="Muestra las ediciones en las que figura Jose Manuel Ruiz Sanchez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Jose Manuel Ruiz Sanchez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Jose Manuel Ruiz Sanchez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="15" class="user-table-row">
+                            <td>Ivan Cano Blanco</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>ivancb@ucm.es</td>
+                            <td>41534010N</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d15" title="Muestra las ediciones en las que figura Ivan Cano Blanco"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Ivan Cano Blanco"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Ivan Cano Blanco del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="16" class="user-table-row">
+                            <td>Carlota Montero Ruiz</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>carlotamr@ucm.es</td>
+                            <td>56679034L</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d16"
+                                        title="Muestra las ediciones en las que figura Carlota Montero Ruiz"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Carlota Montero Ruiz"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Carlota Montero Ruiz del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="17" class="user-table-row">
+                            <td>Carlota Muñoz Sanchez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>carlotams@ucm.es</td>
+                            <td>83670078B</td>
+                            <td>2</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d17"
+                                        title="Muestra las ediciones en las que figura Carlota Muñoz Sanchez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Carlota Muñoz Sanchez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Carlota Muñoz Sanchez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="18" class="user-table-row">
+                            <td>Ainhoa Diaz Delgado</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>ainhoadd@ucm.es</td>
+                            <td>10570046M</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d18" title="Muestra las ediciones en las que figura Ainhoa Diaz Delgado"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Ainhoa Diaz Delgado"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Ainhoa Diaz Delgado del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="19" class="user-table-row">
+                            <td>Sergio Velasco Herrera</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>sergiovh@ucm.es</td>
+                            <td>86650646D</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d19"
+                                        title="Muestra las ediciones en las que figura Sergio Velasco Herrera"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Sergio Velasco Herrera"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Sergio Velasco Herrera del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="20" class="user-table-row">
+                            <td>Marina Fernandez Velasco</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>marinafv@ucm.es</td>
+                            <td>47986023L</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d20"
+                                        title="Muestra las ediciones en las que figura Marina Fernandez Velasco"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Marina Fernandez Velasco"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Marina Fernandez Velasco del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="21" class="user-table-row">
+                            <td>Iker Parra Alvarez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>ikerpa@ucm.es</td>
+                            <td>01277178B</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d21" title="Muestra las ediciones en las que figura Iker Parra Alvarez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Iker Parra Alvarez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Iker Parra Alvarez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="22" class="user-table-row">
+                            <td>Rafael Cortes Leon</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>rafaelcl@ucm.es</td>
+                            <td>41888033L</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d22" title="Muestra las ediciones en las que figura Rafael Cortes Leon"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Rafael Cortes Leon"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Rafael Cortes Leon del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="23" class="user-table-row">
+                            <td>Blanca Navarro Morales</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>blancanm@ucm.es</td>
+                            <td>02901006Q</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d23"
+                                        title="Muestra las ediciones en las que figura Blanca Navarro Morales"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Blanca Navarro Morales"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Blanca Navarro Morales del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="24" class="user-table-row">
+                            <td>Jorge Vazquez Ruiz</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>jorgevr@ucm.es</td>
+                            <td>72489620Z</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d24" title="Muestra las ediciones en las que figura Jorge Vazquez Ruiz"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Jorge Vazquez Ruiz"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Jorge Vazquez Ruiz del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="25" class="user-table-row">
+                            <td>Fernando Hidalgo Alvarez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>fernandoha@ucm.es</td>
+                            <td>25530040V</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d25"
+                                        title="Muestra las ediciones en las que figura Fernando Hidalgo Alvarez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Fernando Hidalgo Alvarez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Fernando Hidalgo Alvarez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="26" class="user-table-row">
+                            <td>Marina Montero Blanco</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>marinamb@ucm.es</td>
+                            <td>33655437C</td>
+                            <td>8</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d26"
+                                        title="Muestra las ediciones en las que figura Marina Montero Blanco"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Marina Montero Blanco"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Marina Montero Blanco del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="27" class="user-table-row">
+                            <td>Julia Sanz Jimenez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>juliasj@ucm.es</td>
+                            <td>47688604J</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d27" title="Muestra las ediciones en las que figura Julia Sanz Jimenez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Julia Sanz Jimenez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Julia Sanz Jimenez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="28" class="user-table-row">
+                            <td>Nerea Ibañez Esteban</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>nereaie@ucm.es</td>
+                            <td>00115428Z</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d28"
+                                        title="Muestra las ediciones en las que figura Nerea Ibañez Esteban"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Nerea Ibañez Esteban"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Nerea Ibañez Esteban del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="29" class="user-table-row">
+                            <td>Laia Carmona Gonzalez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>laiacg@ucm.es</td>
+                            <td>94607419R</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d29"
+                                        title="Muestra las ediciones en las que figura Laia Carmona Gonzalez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Laia Carmona Gonzalez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Laia Carmona Gonzalez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="30" class="user-table-row">
+                            <td>Jose Antonio Suarez Gonzalez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>jasg@ucm.es</td>
+                            <td>77521230Y</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d30"
+                                        title="Muestra las ediciones en las que figura Jose Antonio Suarez Gonzalez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Jose Antonio Suarez Gonzalez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Jose Antonio Suarez Gonzalez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="31" class="user-table-row">
+                            <td>Rocio Carrasco Leon</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>rociocl@ucm.es</td>
+                            <td>60009211A</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d31" title="Muestra las ediciones en las que figura Rocio Carrasco Leon"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Rocio Carrasco Leon"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Rocio Carrasco Leon del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="32" class="user-table-row">
+                            <td>Ana Leon Lopez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>anall@ucm.es</td>
+                            <td>00879149C</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d32" title="Muestra las ediciones en las que figura Ana Leon Lopez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Ana Leon Lopez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Ana Leon Lopez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="33" class="user-table-row">
+                            <td>Raul Jimenez Ortega</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>rauljo@ucm.es</td>
+                            <td>60578743D</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d33" title="Muestra las ediciones en las que figura Raul Jimenez Ortega"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Raul Jimenez Ortega"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Raul Jimenez Ortega del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="34" class="user-table-row">
+                            <td>Miguel Gonzalez Herrero</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>miguelgh@ucm.es</td>
+                            <td>36455275E</td>
+                            <td>6</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d34"
+                                        title="Muestra las ediciones en las que figura Miguel Gonzalez Herrero"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Miguel Gonzalez Herrero"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Miguel Gonzalez Herrero del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="35" class="user-table-row">
+                            <td>Alvaro Fernandez Torres</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>alvaroft@ucm.es</td>
+                            <td>43719063L</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d35"
+                                        title="Muestra las ediciones en las que figura Alvaro Fernandez Torres"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Alvaro Fernandez Torres"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Alvaro Fernandez Torres del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="36" class="user-table-row">
+                            <td>Nicolas Flores Rodriguez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>nicolasfr@ucm.es</td>
+                            <td>40862240A</td>
+                            <td>4</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d36"
+                                        title="Muestra las ediciones en las que figura Nicolas Flores Rodriguez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Nicolas Flores Rodriguez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Nicolas Flores Rodriguez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="37" class="user-table-row">
+                            <td>Adriana Nieto Pastor</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>adriananp@ucm.es</td>
+                            <td>95582063C</td>
+                            <td>3</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d37"
+                                        title="Muestra las ediciones en las que figura Adriana Nieto Pastor"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Adriana Nieto Pastor"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Adriana Nieto Pastor del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="38" class="user-table-row">
+                            <td>Pau Vidal Vargas</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>pauvv@ucm.es</td>
+                            <td>65049435F</td>
+                            <td>2</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d38" title="Muestra las ediciones en las que figura Pau Vidal Vargas"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Pau Vidal Vargas"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Pau Vidal Vargas del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="39" class="user-table-row">
+                            <td>Irene Gimenez Fernandez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>irenegf@ucm.es</td>
+                            <td>27079834W</td>
+                            <td>9</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d39"
+                                        title="Muestra las ediciones en las que figura Irene Gimenez Fernandez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Irene Gimenez Fernandez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Irene Gimenez Fernandez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="40" class="user-table-row">
+                            <td>Sergio Ramos Vargas</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>sergiorv@ucm.es</td>
+                            <td>30033295X</td>
+                            <td>7</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d40" title="Muestra las ediciones en las que figura Sergio Ramos Vargas"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Sergio Ramos Vargas"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Sergio Ramos Vargas del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="41" class="user-table-row">
+                            <td>Marcos Rubio Marquez</td>
+                            <td><span class="badge text-bg-success opacity-50">alumno</span></td>
+                            <td>marcosrm@ucm.es</td>
+                            <td>68808020R</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d41"
+                                        title="Muestra las ediciones en las que figura Marcos Rubio Marquez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Marcos Rubio Marquez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Marcos Rubio Marquez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="42" class="user-table-row">
+                            <td>Silvia Roman Serrano</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>silviars@ucm.es</td>
+                            <td>48704315K</td>
+                            <td>1</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d42"
+                                        title="Muestra las ediciones en las que figura Silvia Roman Serrano"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Silvia Roman Serrano"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Silvia Roman Serrano del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="43" class="user-table-row">
+                            <td>Mireia Carrasco Gil</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>mireiacg@ucm.es</td>
+                            <td>63020295L</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d43" title="Muestra las ediciones en las que figura Mireia Carrasco Gil"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Mireia Carrasco Gil"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Mireia Carrasco Gil del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="44" class="user-table-row">
+                            <td>Juan Gonzalez Herrero</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>juangh@ucm.es</td>
+                            <td>00292594B</td>
+                            <td>1</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d44"
+                                        title="Muestra las ediciones en las que figura Juan Gonzalez Herrero"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Juan Gonzalez Herrero"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Juan Gonzalez Herrero del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="45" class="user-table-row">
+                            <td>Andrea Hernandez Vargas</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>andreahv@ucm.es</td>
+                            <td>87774069C</td>
+                            <td>5</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d45"
+                                        title="Muestra las ediciones en las que figura Andrea Hernandez Vargas"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Andrea Hernandez Vargas"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Andrea Hernandez Vargas del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="46" class="user-table-row">
+                            <td>Marina Campos Bravo</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>marinacb@ucm.es</td>
+                            <td>29385709N</td>
+                            <td>3</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d46" title="Muestra las ediciones en las que figura Marina Campos Bravo"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Marina Campos Bravo"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Marina Campos Bravo del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="47" class="user-table-row">
+                            <td>Marc Duran Benitez</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>marcdb@ucm.es</td>
+                            <td>16136809D</td>
+                            <td>1</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d47" title="Muestra las ediciones en las que figura Marc Duran Benitez"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Marc Duran Benitez"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Marc Duran Benitez del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="48" class="user-table-row">
+                            <td>Raquel Vidal Duran</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>raquelvd@ucm.es</td>
+                            <td>71292597A</td>
+                            <td>0</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d48" title="Muestra las ediciones en las que figura Raquel Vidal Duran"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Raquel Vidal Duran"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Raquel Vidal Duran del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="49" class="user-table-row">
+                            <td>Nerea Perez Castillo</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>nereapc@ucm.es</td>
+                            <td>32822040M</td>
+                            <td>2</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d49"
+                                        title="Muestra las ediciones en las que figura Nerea Perez Castillo"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Nerea Perez Castillo"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Nerea Perez Castillo del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="50" class="user-table-row">
+                            <td>Adrian Gomez Santos</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>adriangs@ucm.es</td>
+                            <td>87699706Q</td>
+                            <td>2</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d50" title="Muestra las ediciones en las que figura Adrian Gomez Santos"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Adrian Gomez Santos"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina a Adrian Gomez Santos del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="51" class="user-table-row">
+                            <td>Sergio Ramirez Serrano</td>
+                            <td><span class="badge text-bg-primary opacity-50">profesor</span></td>
+                            <td>sergiors@ucm.es</td>
+                            <td>89693972K</td>
+                            <td>1</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button id="d51"
+                                        title="Muestra las ediciones en las que figura Sergio Ramirez Serrano"
+                                        class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                                    <button title="Edita el usuario Sergio Ramirez Serrano"
+                                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina a Sergio Ramirez Serrano del sistema, y de todas las ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="courses" class="col-md-6 border border-3 rounded">
+                <h4 class="mt-3">Cursos</h4>
+
+                <div class="row">
+                    <div class="col md-auto input-group">
+                        <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar">
+                        <span class="input-group-text" id="search-in-users-button">🔍</span>
+                    </div>
+                    <div class="col text-end">
+                        <button title="Crea un nuevo curso" class="add-course btn btn-outline-primary">➕</button>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Área</th>
+                            <th>Nivel</th>
+                            <th>Ediciones</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tr data-id="52" class="course-table-row">
+                            <td>Google Docs</td>
+                            <td><span class="badge text-bg-secondary opacity-50">ofimática</span></td>
+                            <td><span class="badge text-bg-success opacity-25">iniciación</span></td>
+                            <td><button id="d109" data-id="109" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐⭐ 3.0 7/11">2021</button> <button id="d198" data-id="198"
+                                    class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="(no disponible) 0/20">2022</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Google Docs"
+                                    class="add-edition btn btn-outline-primary btn-sm" disabled="">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Google Docs"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Google Docs del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="53" class="course-table-row">
+                            <td>Programación</td>
+                            <td><span class="badge text-bg-warning opacity-50">internet</span></td>
+                            <td><span class="badge text-bg-success opacity-75">especialización</span></td>
+                            <td><button id="d219" data-id="219" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="(no disponible) 0/29">2022</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Programación"
+                                    class="add-edition btn btn-outline-primary btn-sm" disabled="">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Programación"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Programación del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="54" class="course-table-row">
+                            <td>Análisis con Python</td>
+                            <td><span class="badge text-bg-danger opacity-50">tec. informáticas</span></td>
+                            <td><span class="badge text-bg-success opacity-50">generalista</span></td>
+                            <td><button id="d121" data-id="121" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐ 2.9 14/23">2021</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Análisis con Python"
+                                    class="add-edition btn btn-outline-primary btn-sm">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Análisis con Python"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button
+                                        title="Elimina el curso Análisis con Python del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="55" class="course-table-row">
+                            <td>UCM Online</td>
+                            <td><span class="badge text-bg-secondary opacity-50">ofimática</span></td>
+                            <td><span class="badge text-bg-success opacity-25">iniciación</span></td>
+                            <td><button id="d62" data-id="62" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐ 2.7 9/12">2020</button> <button id="d249" data-id="249"
+                                    class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="(no disponible) 0/25">2022</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso UCM Online"
+                                    class="add-edition btn btn-outline-primary btn-sm" disabled="">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso UCM Online"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso UCM Online del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="56" class="course-table-row">
+                            <td>Hojas de Cálculo</td>
+                            <td><span class="badge text-bg-secondary opacity-50">ofimática</span></td>
+                            <td><span class="badge text-bg-success opacity-50">generalista</span></td>
+                            <td><button id="d75" data-id="75" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐⭐ 3.2 14/17">2020</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Hojas de Cálculo"
+                                    class="add-edition btn btn-outline-primary btn-sm">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Hojas de Cálculo"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Hojas de Cálculo del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="57" class="course-table-row">
+                            <td>Todo Internet</td>
+                            <td><span class="badge text-bg-warning opacity-50">internet</span></td>
+                            <td><span class="badge text-bg-success opacity-75">especialización</span></td>
+                            <td><button id="d145" data-id="145" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐ 2.8 15/21">2021</button> <button id="d275" data-id="275"
+                                    class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="(no disponible) 0/25">2022</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Todo Internet"
+                                    class="add-edition btn btn-outline-primary btn-sm" disabled="">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Todo Internet"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Todo Internet del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="58" class="course-table-row">
+                            <td>Scratch</td>
+                            <td><span class="badge text-bg-secondary opacity-50">ofimática</span></td>
+                            <td><span class="badge text-bg-success opacity-50">generalista</span></td>
+                            <td>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Scratch"
+                                    class="add-edition btn btn-outline-primary btn-sm">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Scratch"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Scratch del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="59" class="course-table-row">
+                            <td>Access</td>
+                            <td><span class="badge text-bg-warning opacity-50">internet</span></td>
+                            <td><span class="badge text-bg-success opacity-25">iniciación</span></td>
+                            <td>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Access"
+                                    class="add-edition btn btn-outline-primary btn-sm">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Access"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Access del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="60" class="course-table-row">
+                            <td>Dataviz</td>
+                            <td><span class="badge text-bg-danger opacity-50">tec. informáticas</span></td>
+                            <td><span class="badge text-bg-success opacity-75">especialización</span></td>
+                            <td><button id="d167" data-id="167" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐⭐ 3.1 24/30">2021</button> <button id="d301" data-id="301"
+                                    class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="(no disponible) 0/16">2022</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Dataviz"
+                                    class="add-edition btn btn-outline-primary btn-sm" disabled="">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Dataviz"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Dataviz del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-id="61" class="course-table-row">
+                            <td>Web y HTML5</td>
+                            <td><span class="badge text-bg-warning opacity-50">internet</span></td>
+                            <td><span class="badge text-bg-success opacity-25">iniciación</span></td>
+                            <td><button id="d93" data-id="93" class="edition-link btn btn-outline-secondary btn-sm"
+                                    title="⭐⭐⭐ 3.3 11/15">2020</button>
+                                <button data-year="2022" title="Crea una edición 2022 para el curso Web y HTML5"
+                                    class="add-edition btn btn-outline-primary btn-sm">➕</button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <button title="Edita el curso Web y HTML5"
+                                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                                    <button title="Elimina el curso Web y HTML5 del sistema, y todas sus ediciones"
+                                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="oneUser" class="col-md-6 border border-3 rounded">
+                <div class="row">
+                    <div class="col md-auto">
+                        <h4 class="md-auto"><i>Pedro Iglesias Santiago</i></h4>
+                    </div>
+                </div>
+                <h5 class="mt-3">Ediciones donde participa</h5>
+                <div class="row">
+                    <div class="col md-auto input-group">
+                        <input id="search-in-user-editions-input" type="search" class="form-control"
+                            placeholder="Filtrar">
+                        <span class="input-group-text">🔍</span>
+                    </div>
+                </div>
+                <table class="table w-100">
+                    <tbody>
+                        <tr>
+                            <th>Edición</th>
+                            <th>Valoración global</th>
+                            <th>Valoración propia</th>
+                            <th>Nota</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tr class="user-edition-table-row" data-user-id="6" data-edition-id="167">
+                            <td>Dataviz (2021-22)</td>
+                            <td>⭐⭐⭐ 3.1 24/30</td>
+
+                            <td class="ed-rating">2</td>
+                            <td class="ed-grade">10</td>
+
+                            <td>
+                                <div class="btn-group">
+                                    <button
+                                        title="Cambia nota y/o valoración para Pedro Iglesias Santiago en Dataviz (2021-22)"
+                                        class="set-result btn btn-outline-secondary btn-sm">✏️</button>
+                                    <button title="Saca a Pedro Iglesias Santiago de Dataviz (2021-22)"
+                                        class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="user-edition-table-row" data-user-id="6" data-edition-id="249">
+                            <td>UCM Online (2022-23)</td>
+                            <td>(no disponible) 0/25</td>
+
+                            <td class="ed-rating">?</td>
+                            <td class="ed-grade">?</td>
+
+                            <td>
+                                <div class="btn-group">
+                                    <button
+                                        title="Cambia nota y/o valoración para Pedro Iglesias Santiago en UCM Online (2022-23)"
+                                        class="set-result btn btn-outline-secondary btn-sm">✏️</button>
+                                    <button title="Saca a Pedro Iglesias Santiago de UCM Online (2022-23)"
+                                        class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr class="user-edition-table-row" data-user-id="6" data-edition-id="275">
+                            <td>Todo Internet (2022-23)</td>
+                            <td>(no disponible) 0/25</td>
+
+                            <td class="ed-rating">?</td>
+                            <td class="ed-grade">?</td>
+
+                            <td>
+                                <div class="btn-group">
+                                    <button
+                                        title="Cambia nota y/o valoración para Pedro Iglesias Santiago en Todo Internet (2022-23)"
+                                        class="set-result btn btn-outline-secondary btn-sm">✏️</button>
+                                    <button title="Saca a Pedro Iglesias Santiago de Todo Internet (2022-23)"
+                                        class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div id="oneEdition" class="col-md-6 border border-3 rounded">
+                <div class="row">
+                    <div class="col md-auto">
+                        <h4 class="md-auto"><i>Análisis con Python (2021-22)</i></h4>
+                    </div>
+                    <div class="col text-end">
+                        <button title="Elimina la edición Análisis con Python (2021-22) del sistema" data-id="121"
+                            class="rm-edition btn btn-outline-danger">🗑️</button>
+                    </div>
+                </div>
+                <h5 class="mt-3">Profesores</h5>
+                <div class="row">
+                    <div class="col md-auto input-group">
+                        <input id="search-in-teachers-input" type="search" class="form-control" placeholder="Filtrar">
+                        <span class="input-group-text">🔍</span>
+                    </div>
+                    <div class="col text-end">
+                        <button title="Matricula un profesor para Análisis con Python (2021-22)" data-id="121"
+                            class="add-profesor-to-edition btn btn-outline-primary">➕</button>
+                    </div>
+                </div>
+                &gt;
+                &gt;
+                &gt;
+                <table class="table w-100 ml-4">
+                    <tbody>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>DNI</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tr class="teacher-table-row" data-user-id="50" data-edition-id="121">
+                            <td>Adrian Gomez Santos</td>
+                            <td>adriangs@ucm.es</td>
+                            <td>87699706Q</td>
+                            <td>&nbsp;
+                                <button
+                                    title="Hace que Adrian Gomez Santos deje de ser profesor de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="teacher-table-row" data-user-id="45" data-edition-id="121">
+                            <td>Andrea Hernandez Vargas</td>
+                            <td>andreahv@ucm.es</td>
+                            <td>87774069C</td>
+                            <td>&nbsp;
+                                <button
+                                    title="Hace que Andrea Hernandez Vargas deje de ser profesor de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="teacher-table-row" data-user-id="42" data-edition-id="121">
+                            <td>Silvia Roman Serrano</td>
+                            <td>silviars@ucm.es</td>
+                            <td>48704315K</td>
+                            <td>&nbsp;
+                                <button
+                                    title="Hace que Silvia Roman Serrano deje de ser profesor de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h5 class="mt-3">Alumnos</h5>
+                <div class="row">
+                    <div class="col md-auto input-group">
+                        <input id="search-in-students-input" type="search" class="form-control" placeholder="Filtrar">
+                        <span class="input-group-text">🔍</span>
+                    </div>
+                    <div class="col text-end">
+                        <button title="Matricula un alumno para Análisis con Python (2021-22)" data-id="121"
+                            class="add-alumno-to-edition btn btn-outline-primary">➕</button>
+                    </div>
+                </div>
+                <table class="table w-100 ml-4">
+                    <tbody>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>DNI</th>
+                            <th>Nota</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="16" data-edition-id="121">
+                            <td>Carlota Montero Ruiz</td>
+                            <td>carlotamr@ucm.es</td>
+                            <td>56679034L</td>
+                            <td class="text-end">8</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Carlota Montero Ruiz de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="21" data-edition-id="121">
+                            <td>Iker Parra Alvarez</td>
+                            <td>ikerpa@ucm.es</td>
+                            <td>01277178B</td>
+                            <td class="text-end">0</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Iker Parra Alvarez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="20" data-edition-id="121">
+                            <td>Marina Fernandez Velasco</td>
+                            <td>marinafv@ucm.es</td>
+                            <td>47986023L</td>
+                            <td class="text-end">6</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Marina Fernandez Velasco de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="33" data-edition-id="121">
+                            <td>Raul Jimenez Ortega</td>
+                            <td>rauljo@ucm.es</td>
+                            <td>60578743D</td>
+                            <td class="text-end">10</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Raul Jimenez Ortega de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="11" data-edition-id="121">
+                            <td>Carmen Bravo Gomez</td>
+                            <td>carmenbg@ucm.es</td>
+                            <td>53572624N</td>
+                            <td class="text-end">8</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Carmen Bravo Gomez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="17" data-edition-id="121">
+                            <td>Carlota Muñoz Sanchez</td>
+                            <td>carlotams@ucm.es</td>
+                            <td>83670078B</td>
+                            <td class="text-end">3</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Carlota Muñoz Sanchez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="22" data-edition-id="121">
+                            <td>Rafael Cortes Leon</td>
+                            <td>rafaelcl@ucm.es</td>
+                            <td>41888033L</td>
+                            <td class="text-end">5</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Rafael Cortes Leon de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="9" data-edition-id="121">
+                            <td>Andres Rubio Suarez</td>
+                            <td>andresrs@ucm.es</td>
+                            <td>94055390H</td>
+                            <td class="text-end">1</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Andres Rubio Suarez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="2" data-edition-id="121">
+                            <td>Pau Garrido Reyes</td>
+                            <td>paugr@ucm.es</td>
+                            <td>88902618M</td>
+                            <td class="text-end">6</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Pau Garrido Reyes de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="28" data-edition-id="121">
+                            <td>Nerea Ibañez Esteban</td>
+                            <td>nereaie@ucm.es</td>
+                            <td>00115428Z</td>
+                            <td class="text-end">7</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Nerea Ibañez Esteban de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="40" data-edition-id="121">
+                            <td>Sergio Ramos Vargas</td>
+                            <td>sergiorv@ucm.es</td>
+                            <td>30033295X</td>
+                            <td class="text-end">2</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Sergio Ramos Vargas de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="23" data-edition-id="121">
+                            <td>Blanca Navarro Morales</td>
+                            <td>blancanm@ucm.es</td>
+                            <td>02901006Q</td>
+                            <td class="text-end">4</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Blanca Navarro Morales de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="14" data-edition-id="121">
+                            <td>Jose Manuel Ruiz Sanchez</td>
+                            <td>jmrs@ucm.es</td>
+                            <td>09081594K</td>
+                            <td class="text-end">9</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Jose Manuel Ruiz Sanchez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="10" data-edition-id="121">
+                            <td>Francisco Javier Gonzalez Ruiz</td>
+                            <td>fjgr@ucm.es</td>
+                            <td>76070927Z</td>
+                            <td class="text-end">3</td>
+                            <td>&nbsp;
+                                <button
+                                    title="Desmatricula a Francisco Javier Gonzalez Ruiz de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="31" data-edition-id="121">
+                            <td>Rocio Carrasco Leon</td>
+                            <td>rociocl@ucm.es</td>
+                            <td>60009211A</td>
+                            <td class="text-end">5</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Rocio Carrasco Leon de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="3" data-edition-id="121">
+                            <td>Alvaro Peña Nuñez</td>
+                            <td>alvaropn@ucm.es</td>
+                            <td>66446746E</td>
+                            <td class="text-end">0</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Alvaro Peña Nuñez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="32" data-edition-id="121">
+                            <td>Ana Leon Lopez</td>
+                            <td>anall@ucm.es</td>
+                            <td>00879149C</td>
+                            <td class="text-end">2</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Ana Leon Lopez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="24" data-edition-id="121">
+                            <td>Jorge Vazquez Ruiz</td>
+                            <td>jorgevr@ucm.es</td>
+                            <td>72489620Z</td>
+                            <td class="text-end">6</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Jorge Vazquez Ruiz de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="15" data-edition-id="121">
+                            <td>Ivan Cano Blanco</td>
+                            <td>ivancb@ucm.es</td>
+                            <td>41534010N</td>
+                            <td class="text-end">4</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Ivan Cano Blanco de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="30" data-edition-id="121">
+                            <td>Jose Antonio Suarez Gonzalez</td>
+                            <td>jasg@ucm.es</td>
+                            <td>77521230Y</td>
+                            <td class="text-end">5</td>
+                            <td>&nbsp;
+                                <button
+                                    title="Desmatricula a Jose Antonio Suarez Gonzalez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="26" data-edition-id="121">
+                            <td>Marina Montero Blanco</td>
+                            <td>marinamb@ucm.es</td>
+                            <td>33655437C</td>
+                            <td class="text-end">0</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Marina Montero Blanco de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="8" data-edition-id="121">
+                            <td>Miriam Perez Ibañez</td>
+                            <td>miriampi@ucm.es</td>
+                            <td>78983169L</td>
+                            <td class="text-end">3</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Miriam Perez Ibañez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                        <tr class="student-table-row" data-user-id="39" data-edition-id="121">
+                            <td>Irene Gimenez Fernandez</td>
+                            <td>irenegf@ucm.es</td>
+                            <td>27079834W</td>
+                            <td class="text-end">1</td>
+                            <td>&nbsp;
+                                <button title="Desmatricula a Irene Gimenez Fernandez de Análisis con Python (2021-22)"
+                                    class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap usando una copia local -->
+    <script src="js/bootstrap-5.2.2.bundle.js"></script>
+
+    <!-- Todos los scripts de interaccion, aqui -->
+    <script src="js/statictest.js" type="module"></script>
+</body>
+
+</html>

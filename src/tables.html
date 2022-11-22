@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Normalmente accedes a un CDN; aquí uso una copia local -->
+    <link href="css/bootstrap-5.2.2.css" rel="stylesheet">
+
+    <!-- Esto aparece como título de la ventana o pestaña en el navegador -->
+    <title>CursoManager: Tablas</title>
+</head>
+
+<body>
+
+    <!-- Navbar principal -->
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CursoManager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#users">Usuarios</a>
+                    </li>              
+                    <li class="nav-item">
+                        <a class="nav-link" href="#course">Cursos</a>
+                    </li>              
+                    <li class="nav-item">
+                        <a class="nav-link" href="#oneUser">Un usuario</a>
+                    </li>              
+                    <li class="nav-item">
+                        <a class="nav-link" href="#oneEdition">Una edición</a>
+                    </li>              
+                    <li class="nav-item">
+                        <a class="nav-link disabled">
+                        (ojo: en este modo <b>no funcionan las acciones</b>)</a>
+                    </li>              
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Div principal; container-fluid expande el contenedor para que ocupe todo el espacio disponible -->
+    <div class="container-fluid cm-main">
+        <div class="row">
+            <div id="users" class="col-md-6 border border-3 rounded">
+
+            </div>
+            <div id="courses" class="col-md-6 border border-3 rounded">
+
+            </div>
+            <div id="oneUser" class="col-md-6 border border-3 rounded">
+
+            </div>
+            <div id="oneEdition" class="col-md-6 border border-3 rounded">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap usando una copia local -->
+    <script src="js/bootstrap-5.2.2.bundle.js"></script>
+
+    <!-- Todos los scripts de interaccion, aqui -->
+    <script src="js/test.js" type="module"></script>
+</body>
+
+</html>
