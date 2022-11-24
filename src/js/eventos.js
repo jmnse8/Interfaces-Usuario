@@ -290,3 +290,15 @@ export function bindSortColumn(clickSelector) {
 
     }));
 }
+
+export function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada) {
+    const avanzado = document.querySelector(selAvanzada);
+    const normal = document.querySelector(selNormal).parentElement;
+    document.querySelector(selBoton)
+        .addEventListener('click', e => {
+            const visible = avanzado.style.display != 'none';
+            avanzado.style.display = visible ? 'none' : '';
+            normal.style.display = visible ? '' : 'none';
+        });
+    avanzado.style.display = 'none';
+}
