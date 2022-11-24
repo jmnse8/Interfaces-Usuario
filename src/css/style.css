@@ -73,6 +73,10 @@
     animation: glowing 20s linear infinite;
   }
 
+  .glow-button:active {
+    background-color: rgba(255, 255, 255, 0.793) !important;
+  }
+
   @keyframes glowing {
     0% {
       background-position: 0 0;

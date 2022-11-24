@@ -68,8 +68,8 @@ export function createUserTable(users) {
 
     const botonNuevoUsuario = `
         <button title="Crea un nuevo usuario" 
-            class="add-user btn btn-outline-primary">➕</button>`
-
+            class="add-user btn btn-outline-primary glow-button">➕</button>`
+    /* AÑADIDO BOTÓN FILTRO */
     return `
     <h4 class="mt-3">Usuarios</h4>
 
@@ -78,8 +78,41 @@ export function createUserTable(users) {
             <input id="search-in-users-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
+    
+        <div class="col">
+            <button id="search-advanced-toggle-user-table" title="Búsqueda avanzada"
+                class="btn btn-outline-secondary">📝</button>
+        </div>
+
         <div class="col text-end">${botonNuevoUsuario}</div>
     </div>
+
+    <div id="filter-in-users" class="m-2 p-2 border border-2 rounded">
+                    <div class="row p-1">
+                        <div class="col-8">
+                            <input type="search" name="name" class="form-control form-control-sm" name=""
+                                placeholder="Nombre o fragmento">
+                        </div>
+                        <div class="col-4">
+                            <input type="search" name="dni" class="form-control form-control-sm"
+                                placeholder="DNI o fragmento">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-6">
+                            <input type="search" name="email" class="form-control form-control-sm"
+                                placeholder="correo o fragmento">
+                        </div>
+                        <div class="col-6">
+                            <select name="role" class="form-select form-select-sm">
+                                <option value="">ninguno</option>
+                                <option value="admin">admin</option>
+                                <option value="alumno">alumno</option>
+                                <option value="profesor">profesor</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
     <table class="table">
     <tr>
@@ -148,9 +181,15 @@ export function createCoursesTable(courses) {
     const editions = Cm.getEditions();
     const results = Cm.getResults();
     const filas = courses.map(o => courseRow(o, editions, results)).join('');
+    const annos = [...new Set(Cm.getEditions().map(e => e.year))];
+
+    let annosH = "";
+    annos.forEach(a => 
+        annosH += `<option value="${a}">${a}</option>`);
+
     const botonNuevoCurso = `
         <button title="Crea un nuevo curso" 
-            class="add-course btn btn-outline-primary">➕</button>`
+            class="add-course btn btn-outline-primary glow-button">➕</button>`;
 
     return `
     <h4 class="mt-3">Cursos</h4>
@@ -160,8 +199,45 @@ export function createCoursesTable(courses) {
             <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
+        <div class="col">
+            <button id="search-advanced-toggle-courses-table" title="Búsqueda avanzada"
+                class="btn btn-outline-secondary">📝</button>
+        </div>
         <div class="col text-end">${botonNuevoCurso}</div>
     </div>
+
+    <div id="filter-in-courses" class="m-2 p-2 border border-2 rounded">
+                    <div class="row p-1">
+                        <div class="col-8">
+                            <input type="search" name="name" class="form-control form-control-sm" name=""
+                                placeholder="Nombre o fragmento">
+                        </div>
+                        <div class="col-4">
+                        <select class="form-select" name="area" required> 
+                        <option value="">ninguno</option>
+                        ${generateOption(Cm.CourseArea.INTERNET, areaClasses, courses?.area)}    
+                        ${generateOption(Cm.CourseArea.OFFICE, areaClasses, courses?.area)}    
+                        ${generateOption(Cm.CourseArea.IT, areaClasses, courses?.area)}    
+                    </select>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-6">
+                        <select class="form-select" name="level" required> 
+                        <option value="">ninguno</option>
+                        ${generateOption(Cm.CourseLevel.INITIATION, levelClasses, courses?.level)}    
+                        ${generateOption(Cm.CourseLevel.GENERALIST, levelClasses, courses?.level)}    
+                        ${generateOption(Cm.CourseLevel.SPECIALIST, levelClasses, courses?.level)}    
+                    </select>
+                        </div>
+                        <div class="col-6">
+                            <select name="year" class="form-select form-select-sm">
+                                <option value="">ninguno</option>
+                                ${annosH}
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
     <table class="table">
     <tr>
@@ -222,7 +298,7 @@ export function createDetailsForEdition(edition) {
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
             data-id="${edition.id}"
-            class="add-${tipo}-to-edition btn btn-outline-primary">➕</button>`
+            class="add-${tipo}-to-edition btn btn-outline-primary glow-button">➕</button>`
 
     return `
     <div class="row">
@@ -235,6 +311,7 @@ export function createDetailsForEdition(edition) {
             <input id="search-in-teachers-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
+        
         <div class="col text-end">${botonMatricula("profesor")}</div>
     </div>
     <table class="table w-100 ml-4">
@@ -253,8 +330,33 @@ export function createDetailsForEdition(edition) {
             <input id="search-in-students-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
+        <div class="col">
+            <button id="search-advanced-toggle-edition-details" title="Búsqueda avanzada"
+                class="btn btn-outline-secondary">📝</button>
+        </div>
         <div class="col text-end">${botonMatricula("alumno")}</div>
     </div>
+    <div id="filter-in-students" class="m-2 p-2 border border-2 rounded">
+                    <div class="row p-1">
+                        <div class="col-8">
+                            <input type="search" name="name" class="form-control form-control-sm" name=""
+                                placeholder="Nombre o fragmento">
+                        </div>
+                        <div class="col-4">
+                            <input type="search" name="dni" class="form-control form-control-sm"
+                                placeholder="DNI o fragmento">
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-9">
+                            <input type="search" name="email" class="form-control form-control-sm"
+                                placeholder="correo o fragmento">
+                        </div>
+                        <div class="col-3">
+                        <input type="number" name="nota" class="form-control form-control-sm" min="0" max="10">
+                        </div>
+                    </div>
+                </div>
     <table class="table w-100 ml-4">
     <tr>
         <th>Nombre</th>
@@ -310,11 +412,11 @@ export function createDetailsForUser(user) {
         o => userEditionRow(o, user, results)).join('')
 
     const student = user.role == Cm.UserRole.STUDENT;
-
+/* 
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
             data-id="${edition.id}"
-            class="add-${tipo}-to-edition btn btn-outline-primary">➕</button>`
+            class="add-${tipo}-to-edition btn btn-outline-primary glow-button">➕</button>` */
 
     return `
     <div class="row">
@@ -326,7 +428,12 @@ export function createDetailsForUser(user) {
             <input id="search-in-user-editions-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
+        <div class="col">
+            <button id="search-advanced-toggle-user-details" title="Búsqueda avanzada"
+                class="btn btn-outline-secondary">📝aaa</button>
+        </div>
     </div>
+
     <table class="table w-100">
     <tr>
         <th>Edición</th>

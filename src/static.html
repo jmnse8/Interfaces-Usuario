@@ -1106,8 +1106,62 @@
                         <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar">
                         <span class="input-group-text" id="search-in-users-button">🔍</span>
                     </div>
+                    <div class="col">
+                        <button id="search-advanced-toggleC" title="Búsqueda avanzada"
+                            class="add-user btn btn-outline-secondary">📝</button>
+                    </div>
                     <div class="col text-end">
                         <button title="Crea un nuevo curso" class="add-course btn btn-outline-primary">➕</button>
+                    </div>
+                </div>
+
+                <div id="filter-in-courses" class="m-2 p-2 border border-2 rounded">
+                    <div class="row p-1">
+                        <div class="col-8">
+                            <input type="search" name="name" class="form-control form-control-sm"
+                                placeholder="Nombre o fragmento">
+                        </div>
+                        <div class="col-4">
+                            <select class="form-select" name="area" required=""> 
+                                <option value="">
+                                    ninguno
+                                </option>
+                                <option value="internet">
+                                    internet
+                                </option>
+                                <option value="ofimática">
+                                    ofimática
+                                </option>
+                                <option value="tec. informáticas">
+                                    tec. informáticas
+                                </option>
+                        
+                                </select>
+                
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-6">
+                            <select class="form-select" name="level" required="">
+                                <option value="iniciación">
+                                    iniciación
+                                </option>
+                                <option value="generalista">
+                                    generalista
+                                </option>
+                                <option value="especialización">
+                                    especialización
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <select name="role" class="form-select form-select-sm">
+                                <option value="">ninguno</option>
+                                <option value="admin">admin</option>
+                                <option value="alumno">alumno</option>
+                                <option value="profesor">profesor</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 

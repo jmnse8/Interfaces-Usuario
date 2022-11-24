@@ -89,6 +89,12 @@ function update() {
 
         E.bindSortColumn("tr>th");
 
+        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details", "#search-in-students-input", "#filter-in-students");
+        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses-table", "#search-in-courses-input", "#filter-in-courses");
+        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-table", "#search-in-users-input", "#filter-in-users");
+        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-details", "#search-in-user-editions-input", "#filter-in-users");
+
+
     } catch (e) {
         console.log('Error actualizando', e);
     }
