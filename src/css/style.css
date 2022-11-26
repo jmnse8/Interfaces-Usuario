@@ -1,14 +1,14 @@
 /* 
 .bg {
     animation:slide 3s ease-in-out infinite alternate;
-    background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+    background-image: linear-gradient(-60deg, rgb(166, 233, 175) 50%, #ffed9e 50%);
     bottom:0;
     left:-50%;
     opacity:.5;
     position:fixed;
     right:-50%;
     top:0;
-    z-index:-1;
+    z-index:-2;
   }
   
   .bg2 {
@@ -20,18 +20,7 @@
     animation-duration:5s;
   }
   
-  .content {
-    background-color:rgba(255,255,255,.8);
-    border-radius:.25em;
-    box-shadow:0 0 .25em rgba(0,0,0,.25);
-    box-sizing:border-box;
-    left:50%;
-    padding:10vmin;
-    position:fixed;
-    text-align:center;
-    top:50%;
-    transform:translate(-50%, -50%);
-  }
+  
 @keyframes slide {
     0% {
       transform:translateX(-25%);
@@ -41,6 +30,71 @@
     }
   } */
 
+  .navbar{
+    background: linear-gradient(45deg, #cc7edf,rgb(129, 210, 140), #d7c368);
+  }
+
+  .container-principal {
+    /* background-color: rgba(232, 232, 232, 0.642);
+    backdrop-filter: blur(6px); */
+    box-shadow: 0px 18.92px 37.84px rgb(38 26 25 / 25%);
+    border-radius: 8px;
+    margin: 3em 5em;
+    padding: 2em;
+  }
+
+  .card-perso {
+    background-color: rgb(214, 244, 218);;
+    box-shadow: 0px 5px 10px rgb(38 26 25 / 25%);
+    border-radius: 8px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    border: 1px solid #f2f8f900;
+  }
+
+  .card-perso:hover {
+    transition: all 0.2s ease-out;
+    top: -5px;
+    border: 1px solid #656565;
+    background-color: rgb(166, 233, 175);
+  }
+
+  .card-perso:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: -16px;
+    right: -16px;
+    background: #ffed9e;
+    height: 32px;
+    width: 32px;
+    filter: blur(8px);
+    transform: scale(5);
+    transform-origin: 50% 50%;
+    transition: transform 0.15s ease-out;
+  }
+  .card-perso:hover:before {
+    transform: scale(8);
+  }
+
+  .card-perso:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 90%;
+    right: 90%;
+    background: #ec9eff;
+    height: 32px;
+    width: 32px;
+    filter: blur(8px);
+    transform: scale(5);
+    transform-origin: 50% 50%;
+    transition: transform 0.15s ease-out;
+  }
+  .card-perso:hover:after {
+    transform: scale(8);
+  }
 
   .glow-button {
     border: none;

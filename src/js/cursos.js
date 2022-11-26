@@ -44,9 +44,10 @@ function update() {
 
         E.bindAddEditionToCourse(".add-edition", () => update())
 
-        E.bindDetails("#courses .edition-link", "#details",
+        E.bindDetails("#courses .edition-link","#details",
             (id) => V.createDetailsForEdition(Cm.resolve(id)),
             (id) => {
+                console.log('hola');
                 const edition = Cm.resolve(id);
                 E.bindRmEditionDetails(".rm-edition", update);
                 E.bindAddUserToEdition(".add-profesor-to-edition",
@@ -82,19 +83,31 @@ function update() {
             () => update());
 
         E.bindSearch("#search-in-users-input", ".user-table-row");
-        E.bindSearch("#search-in-courses-input", ".course-table-row");
+        E.bindSearch("#search-in-courses-input", ".course-card");
         E.bindSearch("#search-in-teachers-input", ".teacher-table-row");
         E.bindSearch("#search-in-students-input", ".student-table-row");
         E.bindSearch("#search-in-user-editions-input", ".user-edition-table-row");
 
         E.bindSortColumn("tr>th");
 
-        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details", "#search-in-students-input", "#filter-in-students");
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses-table", "#search-in-courses-input", "#filter-in-courses");
+        //E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details", "#search-in-students-input", "#filter-in-students");
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-table", "#search-in-users-input", "#filter-in-users");
-        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-details", "#search-in-user-editions-input", "#filter-in-users");
+        //E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-details", "#search-in-user-editions-input", "#filter-in-users");
+        
+        // filtros usuario
+        document.querySelectorAll("#filter-in-users input, #filter-in-users select").forEach(o =>{
+            o.addEventListener('input', e => {
+                E.advancedUserFilter("#filter-in-users", ".user-table-row");
+            })
+        });
 
-
+        //filtros cursos
+        document.querySelectorAll("#filter-in-courses input, #filter-in-courses select").forEach(o =>{
+            o.addEventListener('input', e => {
+                E.advancedCourseFilter("#filter-in-courses", ".course-card");
+            })
+        });
     } catch (e) {
         console.log('Error actualizando', e);
     }
@@ -103,8 +116,9 @@ function update() {
 //
 // Código que se ejecuta al lanzar la aplicación. 
 // No pongas código de este tipo en ningún otro sitio
-//
-const modalEdit = new bootstrap.Modal(document.querySelector('#cmModal'));
+//Añadido export para poder usarlo en eventos :(
+export const modalEdit = new bootstrap.Modal(document.querySelector('#cmModal'));
+
 
 Cm.init()
 update()

@@ -145,7 +145,7 @@ function ratingForEdition(results, e) {
     return `${estrellitas} ${n}/${max}`;
 }
 
-function courseRow(course, editions, results) {
+/* function courseRow(course, editions, results) {
     const ratings = editions.filter(o => o.course == course.id).map(e =>
         `<button id="d${e.id}" data-id="${e.id}" 
             class="edition-link btn btn-outline-secondary btn-sm" 
@@ -175,12 +175,78 @@ function courseRow(course, editions, results) {
         </td>        
     </tr>
     `;
+} */
+
+function courseCard(course, editions, results) {
+    const ratings = editions.filter(o => o.course == course.id).map(e =>
+        `<button id="d${e.id}" data-id="${e.id}" data-name="${course.name.replace(/\s/g, '')}"
+            class="edition-link btn btn-outline-secondary btn-sm course-year" 
+            title="${ratingForEdition(results, e)}">${e.year}</button>`
+    );
+
+    const year = new Date().getFullYear();
+    const hasCurrentEdition = editions.filter(o => o.course == course.id && o.year == year).length == 0;
+
+    return `
+    <div data-id="${course.id}" class="card m-3 card-perso course-card" style="width: 20em;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h5 class="card-title course-name">${course.name}</h5>
+                </div>
+                <div class="col-sm-5 text-md-end">
+                    <button title="Edita el curso ${course.name}"
+                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                    <button
+                        title="Elimina el curso ${course.name} del sistema, y todas sus ediciones"
+                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto">
+                    <p>Área: </p>
+                </div>
+                <div class="col-auto">
+                    <span class="${areaClasses[course.area]} course-area">${course.area}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <p>Nivel: </p>
+                </div>
+                <div class="col-auto">
+                    <span class="${levelClasses[course.level]} course-level">${course.level}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <p>Ediciones: </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    ${ratings.join(' ')}
+                    <button data-year="${year}"
+                        title="Crea una edición ${year} para el curso ${course.name}"
+                        class="add-edition btn btn-outline-primary btn-sm" ${hasCurrentEdition ? ""
+                        :"disabled"}>➕
+                    </button>
+                </div>
+            </div>
+            <div id="details${course.name.replace(/\s/g, '')}">
+            </div>
+        </div>
+    </div>
+    `;
 }
+
+
 
 export function createCoursesTable(courses) {
     const editions = Cm.getEditions();
     const results = Cm.getResults();
-    const filas = courses.map(o => courseRow(o, editions, results)).join('');
+    const tarjetas = courses.map(o => courseCard(o, editions, results)).join('');
     const annos = [...new Set(Cm.getEditions().map(e => e.year))];
 
     let annosH = "";
@@ -207,48 +273,42 @@ export function createCoursesTable(courses) {
     </div>
 
     <div id="filter-in-courses" class="m-2 p-2 border border-2 rounded">
-                    <div class="row p-1">
-                        <div class="col-8">
-                            <input type="search" name="name" class="form-control form-control-sm" name=""
-                                placeholder="Nombre o fragmento">
-                        </div>
-                        <div class="col-4">
-                        <select class="form-select" name="area" required> 
-                        <option value="">ninguno</option>
-                        ${generateOption(Cm.CourseArea.INTERNET, areaClasses, courses?.area)}    
-                        ${generateOption(Cm.CourseArea.OFFICE, areaClasses, courses?.area)}    
-                        ${generateOption(Cm.CourseArea.IT, areaClasses, courses?.area)}    
-                    </select>
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-6">
-                        <select class="form-select" name="level" required> 
-                        <option value="">ninguno</option>
-                        ${generateOption(Cm.CourseLevel.INITIATION, levelClasses, courses?.level)}    
-                        ${generateOption(Cm.CourseLevel.GENERALIST, levelClasses, courses?.level)}    
-                        ${generateOption(Cm.CourseLevel.SPECIALIST, levelClasses, courses?.level)}    
-                    </select>
-                        </div>
-                        <div class="col-6">
-                            <select name="year" class="form-select form-select-sm">
-                                <option value="">ninguno</option>
-                                ${annosH}
-                            </select>
-                        </div>
-                    </div>
-                </div>
+        <div class="row p-1">
+            <div class="col-8">
+                <input type="search" name="name" class="form-control form-control-sm"
+                    placeholder="Nombre o fragmento">
+            </div>
+            <div class="col-4">
+                <select name="area" class="form-select form-select-sm"> 
+                    <option value="">ninguno</option>
+                    ${generateOption(Cm.CourseArea.INTERNET, areaClasses, courses?.area)}    
+                    ${generateOption(Cm.CourseArea.OFFICE, areaClasses, courses?.area)}    
+                    ${generateOption(Cm.CourseArea.IT, areaClasses, courses?.area)}    
+                </select>
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-6">
+                <select name="level" class="form-select form-select-sm"> 
+                    <option value="">ninguno</option>
+                    ${generateOption(Cm.CourseLevel.INITIATION, levelClasses, courses?.level)}    
+                    ${generateOption(Cm.CourseLevel.GENERALIST, levelClasses, courses?.level)}    
+                    ${generateOption(Cm.CourseLevel.SPECIALIST, levelClasses, courses?.level)}    
+                </select>
+            </div>
+            <div class="col-6">
+                <select name="year" class="form-select form-select-sm">
+                    <option value="">ninguno</option>
+                    ${annosH}
+                </select>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-    <tr>
-        <th>Nombre</th>
-        <th>Área</th>
-        <th>Nivel</th>
-        <th>Ediciones</th>
-        <th>Acciones</th>
-    </tr>
-    ${filas}
-    </table>
+    <div class="d-flex flex-wrap justify-content-evenly">
+        ${tarjetas}  
+    </div>
+    
  `;
 }
 
@@ -294,6 +354,12 @@ export function createDetailsForEdition(edition) {
         <button title="Elimina la edición ${edition.name} del sistema" 
             data-id="${edition.id}"
             class="rm-edition btn btn-outline-danger">🗑️</button>`
+    
+    const botonMinimizar = `
+    <button title="Minimiza la edición ${edition.name} del sistema" 
+        data-id="${edition.id}"
+        id="mini-${edition.id}"
+        class="btn">⬆</button>`
 
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
@@ -301,6 +367,10 @@ export function createDetailsForEdition(edition) {
             class="add-${tipo}-to-edition btn btn-outline-primary glow-button">➕</button>`
 
     return `
+    <hr class="divider">
+    <div class="row">
+        <div class="col-12 text-center">${botonMinimizar}</div>
+    </div>
     <div class="row">
         <div class="col md-auto"><h4 class="md-auto"><i>${edition.name}</i></h4></div>
         <div class="col text-end">${botonBorrado}</div>
@@ -327,16 +397,16 @@ export function createDetailsForEdition(edition) {
     <h5 class="mt-3">Alumnos</h5>
     <div class="row">
         <div class="col md-auto input-group">
-            <input id="search-in-students-input" type="search" class="form-control" placeholder="Filtrar" />
+            <input id="search-in-students-input${edition.id}" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
         <div class="col">
-            <button id="search-advanced-toggle-edition-details" title="Búsqueda avanzada"
+            <button id="search-advanced-toggle-edition-details${edition.id}" title="Búsqueda avanzada"
                 class="btn btn-outline-secondary">📝</button>
         </div>
         <div class="col text-end">${botonMatricula("alumno")}</div>
     </div>
-    <div id="filter-in-students" class="m-2 p-2 border border-2 rounded">
+    <div id="filter-in-students${edition.id}" class="m-2 p-2 border border-2 rounded">
                     <div class="row p-1">
                         <div class="col-8">
                             <input type="search" name="name" class="form-control form-control-sm" name=""

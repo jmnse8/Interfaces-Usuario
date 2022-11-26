@@ -2,6 +2,7 @@
 
 import * as Cm from './cmapi.js'
 import * as U from './util.js'
+import * as C from './cursos.js'
 
 /**
  * Para las prácticas de IU, pon aquí (o en otros js externos incluidos desde tus .htmls) el código
@@ -19,11 +20,71 @@ import * as U from './util.js'
 
 export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, listenersFn) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const id = e.target.dataset.id || e.target.closest("tr").dataset.id;
+        const id = e.target.dataset.id || e.target.closest(".card").dataset.id;
         console.log(e, id);
-        U.one(detailsSelector).innerHTML = htmlGenerationFn(id);
-        listenersFn(id);
+        let idDiv = detailsSelector+e.target.dataset.name;
+        
+        const elemento = U.one(idDiv);//;
+        
+        elemento.innerHTML = htmlGenerationFn(id);
+        elemento.closest('.card').style.width = '90%';
+
+        
+        //Contendo de listenersFn(id); traido aquí ya que la linea 51 salta excepción pero hace que funcione, de la forma normal no se  porque no va
+        const edition = Cm.resolve(id);
+
+        bindMinEdition(edition.id, idDiv);
+
+        bindRmEditionDetails(".rm-edition", update);
+        bindAddUserToEdition(".add-profesor-to-edition",
+            "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => C.modalEdit,//he tenido que importar el modal aquí para usarlo
+            () => `Añadiendo profesor a <i>${edition.name}</i>`,
+            () => V.prepareAddUserToEditionModal(edition, Cm.UserRole.TEACHER),
+            () => U.one(`#d${id}`).click());
+        bindAddUserToEdition(".add-alumno-to-edition",
+            "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => C.modalEdit,
+            () => `Añadiendo alumno a <i>${edition.name}</i>`,
+            () => V.prepareAddUserToEditionModal(edition, Cm.UserRole.STUDENT),
+            () => U.one(`#d${id}`).click());
+        //update();
+
+        // toggle boton de filtro avanzado
+        alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details"+edition.id, "#search-in-students-input"+edition.id, "#filter-in-students"+edition.id);
+
+        //Evento de filtro avanzado
+        document.querySelectorAll("#filter-in-students"+edition.id+ " input, #filter-in-students"+edition.id+ " select").forEach(o =>{
+            o.addEventListener('input', e => {
+                advancedStudentFilter("#filter-in-students"+edition.id, ".student-table-row");
+            })
+        });
+
+        //Metido esta linea aquí porque he quitado el update de arriba
+        bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
+        
+        //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
+        document.querySelector(idDiv) = elemento;
+        
+
+        listenersFn(id);//esta linea no se llega a ejecutar
+        
     }))
+}
+
+
+// función para meter click event a el botón de minimizar la edición
+function bindMinEdition(idDiv, id){
+    //console.log('creaMini');
+    //console.log(U.one('#mini-'+idDiv));
+    let idBtn = '#mini-'+idDiv;
+    U.one(idBtn).addEventListener('click', e => {
+        console.log('minimiza');
+        const elemento = U.one(id);//;
+        
+        elemento.innerHTML = '';
+        elemento.closest('.card').style.width = '20em';
+        document.querySelector(id) = elemento;
+    });
+    
 }
 
 
@@ -52,7 +113,7 @@ export function bindRmEditionDetails(clickSelector, callback) {
 
 export function bindAddEditionToCourse(clickSelector, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const id = e.target.closest("tr").dataset.id;
+        const id = e.target.closest(".card").dataset.id;
         const year = e.target.dataset.year;
         console.log(e, id, year);
         Cm.addEdition(Cm.resolve(id), year);
@@ -62,11 +123,11 @@ export function bindAddEditionToCourse(clickSelector, callback) {
 
 export function bindRmCourseRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const row = e.target.closest("tr");
-        const id = row.dataset.id;
+        const card = e.target.closest(".card");
+        const id = card.dataset.id;
         console.log(e, id);
         Cm.rmCourse(id);
-        row.remove();
+        card.remove();
     }));
 }
 
@@ -160,10 +221,10 @@ export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector
 
 export function bindAddOrEditCourse(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
     modalFn, formTitleFn, formContentsFn, callback) {
-
+        
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const id = e.target.closest("tr") ?
-            e.target.closest("tr").dataset.id :
+        const id = e.target.closest(".card") ?
+            e.target.closest(".card").dataset.id :
             undefined;
         const course = id ? Cm.resolve(id) : undefined;
 
@@ -301,4 +362,83 @@ export function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada
             normal.style.display = visible ? '' : 'none';
         });
     avanzado.style.display = 'none';
+    
+}
+
+export function advancedUserFilter(filterSel, rowSel) {
+    const filterDiv = document.querySelector(filterSel);
+    const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+    const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
+    const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
+    const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
+
+    const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+
+    for (let r of document.querySelectorAll(rowSel)) {
+        let ok = true;
+        for (let [f, col] of 
+            [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
+                if (f == '' || ! ok) continue;
+                const v = valueAt(r, col).toLowerCase();
+                //console.log(v, f, col, v.indexOf(f));
+                if (v.indexOf(f) == -1) ok = false;
+        }
+        r.style.display = ok ? '' : 'none';
+    }
+}
+
+export function advancedCourseFilter(filterSel, rowSel) {
+    const filterDiv = document.querySelector(filterSel);
+    const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+    const area = filterDiv.querySelector("select[name=area]").value.toLowerCase();
+    const level = filterDiv.querySelector("select[name=level]").value.toLowerCase();
+    const year = filterDiv.querySelector("select[name=year]").value.toLowerCase();
+
+    for (let r of document.querySelectorAll(rowSel)) {
+        let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
+
+        if(name !== '')
+            ok1 = (r.querySelector('.course-name').innerText.toLowerCase().indexOf(name)) ? false : true;
+        if(area !== '')
+            ok2 = (r.querySelector('.course-area').innerText.toLowerCase().indexOf(area)) ? false : true;
+        if(level !== '')  
+            ok3 = (r.querySelector('.course-level').innerText.toLowerCase().indexOf(level)) ? false : true;
+        if(year !== ''){
+            let years = r.querySelectorAll('.course-year');
+            if(years !== null){
+                for(let y of years){
+                    if(!ok4)
+                        break;
+                    ok4 = (y.innerText.toLowerCase().indexOf(year)) ? false : true;
+                }
+            }
+            else
+                ok4 = false;
+        }
+        let ok = (ok1 && ok2 && ok3 && ok4) ? true : false;
+
+        r.style.display = ok ? '' : 'none';
+    }
+}
+
+function advancedStudentFilter(filterSel, rowSel) {
+    const filterDiv = document.querySelector(filterSel);
+    const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+    const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
+    const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
+    const nota = filterDiv.querySelector("input[name=nota]").value.toLowerCase();
+
+    const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+
+    for (let r of document.querySelectorAll(rowSel)) {
+        let ok = true;
+        for (let [f, col] of 
+            [[name, 0], [email, 1], [dni, 2], [nota, 3]]) {
+                if (f == '' || ! ok) continue;
+                const v = valueAt(r, col).toLowerCase();
+                //console.log(v, f, col, v.indexOf(f));
+                if (v.indexOf(f) == -1) ok = false;
+        }
+        r.style.display = ok ? '' : 'none';
+    }
 }
