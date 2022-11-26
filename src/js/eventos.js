@@ -58,8 +58,12 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
             })
         });
 
+
+
         //Metido esta linea aquí porque he quitado el update de arriba
         bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
+        bindSearch("#search-in-students-input"+edition.id, ".student-table-row");
+        bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
         
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
         document.querySelector(idDiv) = elemento;

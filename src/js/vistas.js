@@ -378,7 +378,7 @@ export function createDetailsForEdition(edition) {
     <h5 class="mt-3">Profesores</h5>
     <div class="row">
         <div class="col md-auto input-group">
-            <input id="search-in-teachers-input" type="search" class="form-control" placeholder="Filtrar" />
+            <input id="search-in-teachers-input${edition.id}" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
         

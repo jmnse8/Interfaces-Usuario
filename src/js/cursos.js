@@ -84,8 +84,8 @@ function update() {
 
         E.bindSearch("#search-in-users-input", ".user-table-row");
         E.bindSearch("#search-in-courses-input", ".course-card");
-        E.bindSearch("#search-in-teachers-input", ".teacher-table-row");
-        E.bindSearch("#search-in-students-input", ".student-table-row");
+        //E.bindSearch("#search-in-teachers-input", ".teacher-table-row");
+        //E.bindSearch("#search-in-students-input", ".student-table-row");
         E.bindSearch("#search-in-user-editions-input", ".user-edition-table-row");
 
         E.bindSortColumn("tr>th");
