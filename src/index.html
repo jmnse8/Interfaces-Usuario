@@ -9,13 +9,15 @@
     <link href="css/bootstrap-5.2.2.css" rel="stylesheet">
     
     <link rel="stylesheet" href="css/style.css">
-
+    
     <!-- Esto aparece como título de la ventana o pestaña en el navegador -->
     <title>CursoManager</title>
 </head>
 
 <body>
-
+    <!-- <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div> -->
     <!-- Navbar principal -->
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
@@ -44,9 +46,9 @@
     </nav>
 
     <!-- Div principal; container-fluid expande el contenedor para que ocupe todo el espacio disponible -->
-    <div class="container-fluid">
+    <div class="container container-principal">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios-tab-pane" type="button" role="tab" aria-controls="usuarios-tab-pane" aria-selected="true">👥 Usuarios</button>
@@ -55,26 +57,35 @@
                         <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos-tab-pane" type="button" role="tab" aria-controls="cursos-tab-pane" aria-selected="false">🎓 Cursos</button>
                     </li>
                 </ul>
-                <div class="tab-content overflow-scroll vh-100" id="myTabContent">
+                <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="usuarios-tab-pane" role="tabpanel" aria-labelledby="usuarios-tab" tabindex="0">
                         <div id="users">
-
+    
                         </div>
                     </div>
                     <div class="tab-pane fade" id="cursos-tab-pane" role="tabpanel" aria-labelledby="cursos-tab" tabindex="0">
                         <div id="courses">
-
+                            
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div id="details" class="overflow-scroll vh-100">
-
-                </div>
+                
             </div>
         </div>
-    </div>
+        
+        <!-- <div class="col-auto" style="display: none;">
+            <div id="details" class="overflow-scroll vh-100">
+
+            </div>
+        </div> -->
+       
+        <!-- <div class="col-md-6">
+            <div id="details" class="overflow-scroll vh-100">
+
+            </div>
+        </div> -->
+    
+</div>
 
     <!-- 
         Modal para pedir información
@@ -108,6 +119,31 @@
 
     <!-- Todos los scripts de interaccion, aqui -->
     <script src="js/cursos.js" type="module"></script>
+
+    <!-- <script>
+        //alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details", "#search-in-students-input", "#filter-in-students");
+                //alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-table", "#search-in-users-input", "#filter-in-users");
+        //alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-user-details", "#search-in-user-editions-input", "#filter-in-users");
+        
+        function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada) {
+            const avanzado = document.querySelector(selAvanzada);
+            console.log(selNormal);
+            const normal = document.querySelector(selNormal);
+            document.querySelector(selBoton)
+                .addEventListener('click', e => {
+                    const visible = avanzado.style.display != 'none';
+                    avanzado.style.display = visible ? 'none' : '';
+                    normal.style.display = visible ? '' : 'none';
+                    console.log('hola');
+                });
+            avanzado.style.display = 'none';
+    
+        }
+
+        alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses-table", "#search-in-courses-input", "#filter-in-courses");
+
+    </script> -->
+
 </body>
 
 </html>
