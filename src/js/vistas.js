@@ -62,9 +62,73 @@ function userRow(user, editions) {
     `;
 }
 
+function userCard(user, editions) {
+    const matriculas = editions.filter(o => o.students.indexOf(user.id) != -1)
+    const docencia = editions.filter(o => o.teachers.indexOf(user.id) != -1)
+    
+    return `
+    <div data-id="${user.id}" class="card m-3 card-perso user-card" style="width: 20em;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-7">
+                    <h5 class="card-title user-name">${user.name}</h5>
+                </div>
+                <div class="col-sm-5 text-md-end">
+                    <button title="Edita el usuario ${user.name}" 
+                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                    <button title="Elimina a ${user.name} del sistema, y de todas las ediciones" 
+                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-auto">
+                    <p><b>Rol:</b></p>
+                </div>
+                <div class="col-auto">
+                    <span class="${roleClasses[user.role]} user-role">${user.role}</span>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <p><b>Correo:</b></p>
+                </div>
+                <div class="col-auto user-email">
+                    ${user.email}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <p><b>Dni:</b></p>
+                </div>
+                <div class="col-auto user-dni">
+                    ${user.dni}
+                </div>
+                <div class="col-auto">
+                    <p title="número de ediciones en las que es alumno y/ó profesor"><b>A/P:</b></p>
+                </div>
+                <div class="col-auto">
+                    ${Math.max(matriculas.length, docencia.length)}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button id="d${user.id}" data-id="${user.id}" data-name="${user.name.replace(/\s/g, '')}" title="Muestra las ediciones en las que figura ${user.name}" 
+                    class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
+                </div>
+            </div>
+            <div id="details${user.name.replace(/\s/g, '')}">
+
+            </div>
+        </div>
+    </div>
+    `;
+}
+
 export function createUserTable(users) {
     const editions = Cm.getEditions();
-    const filas = users.map(o => userRow(o, editions)).join('');
+    const filas = users.map(o => userCard(o, editions)).join('');
 
     const botonNuevoUsuario = `
         <button title="Crea un nuevo usuario" 
@@ -88,43 +152,41 @@ export function createUserTable(users) {
     </div>
 
     <div id="filter-in-users" class="m-2 p-2 border border-2 rounded">
-                    <div class="row p-1">
-                        <div class="col-8">
-                            <input type="search" name="name" class="form-control form-control-sm" name=""
-                                placeholder="Nombre o fragmento">
-                        </div>
-                        <div class="col-4">
-                            <input type="search" name="dni" class="form-control form-control-sm"
-                                placeholder="DNI o fragmento">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-6">
-                            <input type="search" name="email" class="form-control form-control-sm"
-                                placeholder="correo o fragmento">
-                        </div>
-                        <div class="col-6">
-                            <select name="role" class="form-select form-select-sm">
-                                <option value="">ninguno</option>
-                                <option value="admin">admin</option>
-                                <option value="alumno">alumno</option>
-                                <option value="profesor">profesor</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+        <div class="row p-1">
+            <div class="col-8">
+                <input type="search" name="name" class="form-control form-control-sm" name=""
+                    placeholder="Nombre o fragmento">
+            </div>
+            <div class="col-4">
+                <input type="search" name="dni" class="form-control form-control-sm"
+                    placeholder="DNI o fragmento">
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-6">
+                <input type="search" name="email" class="form-control form-control-sm"
+                    placeholder="correo o fragmento">
+            </div>
+            <div class="col-6">
+                <select name="role" class="form-select form-select-sm">
+                    <option value="">rol - ninguno</option>
+                    <option value="admin">admin</option>
+                    <option value="alumno">alumno</option>
+                    <option value="profesor">profesor</option>
+                </select>
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-12 text-center">
+                <button id="reset-search-advanced-user-table" title="Reiniciar búsqueda avanzada"
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-    <tr>
-        <th>Nombre</th>
-        <th>Rol</th>
-        <th>Correo</th>
-        <th>DNI</th>
-        <th title="número de ediciones en las que es alumno y/ó profesor">A/P</th>
-        <th>Acciones</th>        
-    </tr>
-    ${filas}
-    </table>
+    <div class="d-flex flex-wrap justify-content-evenly">
+        ${filas}  
+    </div>
  `;
 }
 
@@ -205,7 +267,7 @@ function courseCard(course, editions, results) {
 
             <div class="row">
                 <div class="col-auto">
-                    <p>Área: </p>
+                    <p><b>Área:</b></p>
                 </div>
                 <div class="col-auto">
                     <span class="${areaClasses[course.area]} course-area">${course.area}</span>
@@ -213,7 +275,7 @@ function courseCard(course, editions, results) {
             </div>
             <div class="row">
                 <div class="col-auto">
-                    <p>Nivel: </p>
+                    <p><b>Nivel:</b></p>
                 </div>
                 <div class="col-auto">
                     <span class="${levelClasses[course.level]} course-level">${course.level}</span>
@@ -221,7 +283,7 @@ function courseCard(course, editions, results) {
             </div>
             <div class="row">
                 <div class="col-auto">
-                    <p>Ediciones: </p>
+                    <p><b>Ediciones:</b></p>
                 </div>
             </div>
             <div class="row">
@@ -280,7 +342,7 @@ export function createCoursesTable(courses) {
             </div>
             <div class="col-4">
                 <select name="area" class="form-select form-select-sm"> 
-                    <option value="">ninguno</option>
+                    <option value="">Área - ninguno</option>
                     ${generateOption(Cm.CourseArea.INTERNET, areaClasses, courses?.area)}    
                     ${generateOption(Cm.CourseArea.OFFICE, areaClasses, courses?.area)}    
                     ${generateOption(Cm.CourseArea.IT, areaClasses, courses?.area)}    
@@ -290,7 +352,7 @@ export function createCoursesTable(courses) {
         <div class="row p-1">
             <div class="col-6">
                 <select name="level" class="form-select form-select-sm"> 
-                    <option value="">ninguno</option>
+                    <option value="">Nivel - ninguno</option>
                     ${generateOption(Cm.CourseLevel.INITIATION, levelClasses, courses?.level)}    
                     ${generateOption(Cm.CourseLevel.GENERALIST, levelClasses, courses?.level)}    
                     ${generateOption(Cm.CourseLevel.SPECIALIST, levelClasses, courses?.level)}    
@@ -298,9 +360,15 @@ export function createCoursesTable(courses) {
             </div>
             <div class="col-6">
                 <select name="year" class="form-select form-select-sm">
-                    <option value="">ninguno</option>
+                    <option value="">Año - ninguno</option>
                     ${annosH}
                 </select>
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-12 text-center">
+                <button id="reset-search-advanced-courses-table" title="Reiniciar búsqueda avanzada"
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
             </div>
         </div>
     </div>
@@ -407,26 +475,32 @@ export function createDetailsForEdition(edition) {
         <div class="col text-end">${botonMatricula("alumno")}</div>
     </div>
     <div id="filter-in-students${edition.id}" class="m-2 p-2 border border-2 rounded">
-                    <div class="row p-1">
-                        <div class="col-8">
-                            <input type="search" name="name" class="form-control form-control-sm" name=""
-                                placeholder="Nombre o fragmento">
-                        </div>
-                        <div class="col-4">
-                            <input type="search" name="dni" class="form-control form-control-sm"
-                                placeholder="DNI o fragmento">
-                        </div>
-                    </div>
-                    <div class="row p-1">
-                        <div class="col-9">
-                            <input type="search" name="email" class="form-control form-control-sm"
-                                placeholder="correo o fragmento">
-                        </div>
-                        <div class="col-3">
-                        <input type="number" name="nota" class="form-control form-control-sm" min="0" max="10">
-                        </div>
-                    </div>
-                </div>
+        <div class="row p-1">
+            <div class="col-8">
+                <input type="search" name="name" class="form-control form-control-sm" name=""
+                    placeholder="Nombre o fragmento">
+            </div>
+            <div class="col-4">
+                <input type="search" name="dni" class="form-control form-control-sm"
+                    placeholder="DNI o fragmento">
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-9">
+                <input type="search" name="email" class="form-control form-control-sm"
+                    placeholder="correo o fragmento">
+            </div>
+            <div class="col-3">
+                <input type="number" placeholder="nota" name="nota" class="form-control form-control-sm" min="0" max="10">
+            </div>
+        </div>
+        <div class="row p-1">
+            <div class="col-12 text-center">
+                <button id="reset-search-advanced-edition-details${edition.id}" title="Reiniciar búsqueda avanzada"
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
+            </div>
+        </div>
+    </div>
     <table class="table w-100 ml-4">
     <tr>
         <th>Nombre</th>
@@ -482,6 +556,11 @@ export function createDetailsForUser(user) {
         o => userEditionRow(o, user, results)).join('')
 
     const student = user.role == Cm.UserRole.STUDENT;
+    const botonMinimizar = `
+    <button title="Minimiza la edición ${user.name} del sistema" 
+        data-id="${user.id}"
+        id="mini-${user.id}"
+        class="btn">⬆</button>`
 /* 
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
@@ -489,18 +568,18 @@ export function createDetailsForUser(user) {
             class="add-${tipo}-to-edition btn btn-outline-primary glow-button">➕</button>` */
 
     return `
+    <hr class="divider">
+    <div class="row">
+        <div class="col-12 text-center">${botonMinimizar}</div>
+    </div>
     <div class="row">
         <div class="col md-auto"><h4 class="md-auto"><i>${user.name}</i></h4></div>
     </div>
     <h5 class="mt-3">Ediciones donde participa</h5>
     <div class="row">
         <div class="col md-auto input-group">
-            <input id="search-in-user-editions-input" type="search" class="form-control" placeholder="Filtrar" />
+            <input id="search-in-user-editions-input${user.id}" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
-        </div>
-        <div class="col">
-            <button id="search-advanced-toggle-user-details" title="Búsqueda avanzada"
-                class="btn btn-outline-secondary">📝aaa</button>
         </div>
     </div>
 
