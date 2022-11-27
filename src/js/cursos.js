@@ -62,7 +62,7 @@ function update() {
                     () => U.one(`#d${id}`).click());
                 update();
             });
-        E.bindDetails("#users .edition-link", '#details',
+        E.bindDetailsUser("#users .edition-link", '#details',
             (id) => V.createDetailsForUser(Cm.resolve(id)),
             (id) => {
                 E.bindSetResults(".set-result", () => U.one(`#d${id}`).click());
@@ -82,7 +82,7 @@ function update() {
             (course) => V.prepareAddOrEditCourseModal(course),
             () => update());
 
-        E.bindSearch("#search-in-users-input", ".user-table-row");
+        E.bindSearch("#search-in-users-input", ".user-card");
         E.bindSearch("#search-in-courses-input", ".course-card");
         //E.bindSearch("#search-in-teachers-input", ".teacher-table-row");
         //E.bindSearch("#search-in-students-input", ".student-table-row");
@@ -98,8 +98,16 @@ function update() {
         // filtros usuario
         document.querySelectorAll("#filter-in-users input, #filter-in-users select").forEach(o =>{
             o.addEventListener('input', e => {
-                E.advancedUserFilter("#filter-in-users", ".user-table-row");
+                E.advancedUserFilter("#filter-in-users", ".user-card");
             })
+        });
+
+        document.querySelector("#reset-search-advanced-user-table").addEventListener('click', e => {
+            E.removeUserFilter("#filter-in-users", ".user-card");
+        });
+
+        document.querySelector("#reset-search-advanced-courses-table").addEventListener('click', e => {
+            E.removeCourseFilter("#filter-in-courses", ".course-card");
         });
 
         //filtros cursos

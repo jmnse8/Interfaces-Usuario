@@ -50,6 +50,10 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
 
         // toggle boton de filtro avanzado
         alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details"+edition.id, "#search-in-students-input"+edition.id, "#filter-in-students"+edition.id);
+        //botón reset filtro avanzado
+        document.querySelector("#reset-search-advanced-edition-details"+edition.id).addEventListener('click', e => {
+            removeStudentFilter("#filter-in-students"+edition.id, ".student-table-row");
+        });
 
         //Evento de filtro avanzado
         document.querySelectorAll("#filter-in-students"+edition.id+ " input, #filter-in-students"+edition.id+ " select").forEach(o =>{
@@ -64,6 +68,44 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
         bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
         bindSearch("#search-in-students-input"+edition.id, ".student-table-row");
         bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
+        
+        //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
+        document.querySelector(idDiv) = elemento;
+        
+
+        listenersFn(id);//esta linea no se llega a ejecutar
+        
+    }))
+}
+
+export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn, listenersFn) {
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        const id = e.target.dataset.id || e.target.closest(".card").dataset.id;
+        console.log(e, id);
+        let idDiv = detailsSelector+e.target.dataset.name;
+        
+        const elemento = U.one(idDiv);//;
+        
+        console.log(htmlGenerationFn(id));
+
+        elemento.innerHTML = htmlGenerationFn(id);
+        elemento.closest('.card').style.width = '90%';
+
+
+
+        
+        //Contendo de listenersFn(id); traido aquí ya que la linea 51 salta excepción pero hace que funcione, de la forma normal no se  porque no va
+        const user = Cm.resolve(id);
+
+        bindMinEdition(user.id, idDiv);
+
+        bindSetResults(".set-result", () => U.one(`#d${id}`).click());
+
+
+        //Metido esta linea aquí porque he quitado el update de arriba
+        bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
+        bindSearch("#search-in-user-editions-input"+user.id, ".user-edition-table-row");
+        //bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
         
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
         document.querySelector(idDiv) = elemento;
@@ -137,11 +179,11 @@ export function bindRmCourseRow(clickSelector) {
 
 export function bindRmUserRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const row = e.target.closest("tr");
-        const id = row.dataset.id;
+        const card = e.target.closest(".card");
+        const id = card.dataset.id;
         console.log(e, id);
         Cm.rmUser(id);
-        row.remove();
+        card.remove();
     }));
 }
 
@@ -185,8 +227,8 @@ export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector
     modalFn, formTitleFn, formContentsFn, callback) {
 
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const id = e.target.closest("tr") ?
-            e.target.closest("tr").dataset.id :
+        const id = e.target.closest(".card") ?
+            e.target.closest(".card").dataset.id :
             undefined;
         const user = id ? Cm.resolve(id) : undefined;
 
@@ -370,23 +412,27 @@ export function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada
 }
 
 export function advancedUserFilter(filterSel, rowSel) {
+
     const filterDiv = document.querySelector(filterSel);
     const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
     const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
     const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
     const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
 
-    const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
-
     for (let r of document.querySelectorAll(rowSel)) {
-        let ok = true;
-        for (let [f, col] of 
-            [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
-                if (f == '' || ! ok) continue;
-                const v = valueAt(r, col).toLowerCase();
-                //console.log(v, f, col, v.indexOf(f));
-                if (v.indexOf(f) == -1) ok = false;
+        let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
+
+        if(name !== '')
+            ok1 = (r.querySelector('.user-name').innerText.toLowerCase().indexOf(name)) ? false : true;
+        if(role !== '')
+            ok2 = (r.querySelector('.user-role').innerText.toLowerCase().indexOf(role)) ? false : true;
+        if(email !== '')  
+            ok3 = (r.querySelector('.user-email').innerText.toLowerCase().indexOf(email)) ? false : true;
+        if(dni !== ''){
+            ok4 = (r.querySelector('.user-dni').innerText.toLowerCase().indexOf(dni)) ? false : true;
         }
+        let ok = (ok1 && ok2 && ok3 && ok4) ? true : false;
+
         r.style.display = ok ? '' : 'none';
     }
 }
@@ -446,3 +492,39 @@ function advancedStudentFilter(filterSel, rowSel) {
         r.style.display = ok ? '' : 'none';
     }
 }
+
+export function removeCourseFilter(filterSel, rowSel) {
+    const filterDiv = document.querySelector(filterSel);
+    filterDiv.querySelector("input[name=name]").value = '';
+    filterDiv.querySelector("select[name=area]").value = '';
+    filterDiv.querySelector("select[name=level]").value = '';
+    filterDiv.querySelector("select[name=year]").value = '';
+    for (let r of document.querySelectorAll(rowSel)) {
+        r.style.display = '';
+    }
+}
+
+function removeStudentFilter(filterSel, rowSel) {
+    const filterDiv = document.querySelector(filterSel);
+    filterDiv.querySelector("input[name=name]").value = '';
+    filterDiv.querySelector("input[name=dni]").value = '';
+    filterDiv.querySelector("input[name=email]").value = '';
+    filterDiv.querySelector("input[name=nota]").value = '';
+    for (let r of document.querySelectorAll(rowSel)) {
+        r.style.display = '';
+    }
+}
+
+
+export function removeUserFilter(filterSel, rowSel) {
+     console.log('hola')
+    const filterDiv = document.querySelector(filterSel);
+    filterDiv.querySelector("input[name=name]").value = '';
+    filterDiv.querySelector("input[name=dni]").value = '';
+    filterDiv.querySelector("input[name=email]").value = '';
+    filterDiv.querySelector("select[name=role]").value = '';
+    for (let r of document.querySelectorAll(rowSel)) {
+        r.style.display = '';
+    }
+ }
+ 
