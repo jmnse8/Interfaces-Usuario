@@ -527,4 +527,10 @@ export function removeUserFilter(filterSel, rowSel) {
         r.style.display = '';
     }
  }
+
+ export function deleteCard(clickSelector){
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        
+    }
+ }
  
