@@ -726,3 +726,21 @@ export function deleteMessageModal(message) {
     ¿Estás seguro de que deseas borrar ${message} ?
     `;
 }
+
+export function toastMessage(info, id){
+
+    return `
+        <div id="miToast${id}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Aviso</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${info}
+            <div class="m-auto pt-2 border-top">
+            <button type="button" id="toastButton${id}"  class="btn btn-primary btn-sm">Deshacer</button>
+            </div>
+        </div>
+        </div>
+    `;
+}

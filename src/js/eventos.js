@@ -267,7 +267,8 @@ export function bindRmFromEdition(clickSelector, callback) {
         C.modalDelete.show();
         const p = U.one("#modalEliminar");
         console.log(Cm.resolve(e.target.closest('tr').dataset.userId).name);
-        p.innerHTML = V.deleteMessageModal(Cm.resolve(e.target.closest('tr').dataset.userId).name + " de " + Cm.resolve(e.target.closest('tr').dataset.editionId).name);
+        const userName = Cm.resolve(e.target.closest('tr').dataset.userId).name;
+        p.innerHTML = V.deleteMessageModal( userName + " de " + Cm.resolve(e.target.closest('tr').dataset.editionId).name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
             const userId = e.target.closest('tr').dataset.userId;
@@ -279,6 +280,16 @@ export function bindRmFromEdition(clickSelector, callback) {
             Cm.setEdition(edition);
             e.target.closest("tr").remove();
             C.modalDelete.hide();
+            
+            const token = Cm.saveState();
+            U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + userName, userId));
+            const t = new bootstrap.Toast(document.querySelector("#miToast" + userId));
+            U.one("#toastButton" + userId).addEventListener("click", e=>{
+                Cm.restoreState(token);
+                t.hide();
+            });
+            t.show();
+            
             callback();
         };
         acceptButton.addEventListener("click", acceptListener);
@@ -316,7 +327,8 @@ export function bindRmCourseRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
         const p = U.one("#modalEliminar");
-        p.innerHTML = V.deleteMessageModal(e.target.closest(".card").querySelector(".course-name").innerText);
+        const name = e.target.closest(".card").querySelector(".course-name").innerText
+        p.innerHTML = V.deleteMessageModal(name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
             const card = e.target.closest(".card");
@@ -325,6 +337,15 @@ export function bindRmCourseRow(clickSelector) {
             Cm.rmCourse(id);
             card.remove();
             C.modalDelete.hide();
+
+            const token = Cm.saveState();
+            U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + name, id));
+            const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
+            U.one("#toastButton" + id).addEventListener("click", e=>{
+                Cm.restoreState(token);
+                t.hide();
+            });
+            t.show();
         };
         acceptButton.addEventListener("click", acceptListener);
     }));
@@ -334,7 +355,10 @@ export function bindRmUserRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
         const p = U.one("#modalEliminar");
-        p.innerHTML = V.deleteMessageModal(e.target.closest(".card").querySelector(".user-name").innerText);
+
+        const name = e.target.closest(".card").querySelector(".user-name").innerText;
+
+        p.innerHTML = V.deleteMessageModal(name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
             const card = e.target.closest(".card");
@@ -343,6 +367,16 @@ export function bindRmUserRow(clickSelector) {
             Cm.rmUser(id);
             card.remove();
             C.modalDelete.hide();
+
+            const token = Cm.saveState();
+           
+            U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + name, id));
+            const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
+            U.one("#toastButton" + id).addEventListener("click", e=>{
+                Cm.restoreState(token);
+                t.hide();
+            });
+            t.show();
         };
         acceptButton.addEventListener("click", acceptListener);
     }));
