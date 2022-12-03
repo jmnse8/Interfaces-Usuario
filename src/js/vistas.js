@@ -723,7 +723,7 @@ export function prepareAddSelectedUserModal() {
 export function deleteMessageModal(message) {
 
     return `
-    ¿Estás seguro de que deseas borrar ${message} ?
+    ¿Estás seguro de que deseas borrar ${message}?
     `;
 }
 
@@ -737,8 +737,8 @@ export function toastMessage(info, id){
         </div>
         <div class="toast-body">
             ${info}
-            <div class="m-auto pt-2 border-top">
-            <button type="button" id="toastButton${id}"  class="btn btn-primary btn-sm">Deshacer</button>
+            <div class="m-auto pt-2 border-top text-center">
+                <button type="button" id="toastButton${id}"  class="btn btn-success btn-sm">Deshacer</button>
             </div>
         </div>
         </div>

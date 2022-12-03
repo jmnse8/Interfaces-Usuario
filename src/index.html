@@ -41,6 +41,13 @@
                         </ul>
                     </li>
                 </ul>
+                <!-- <div class="nav-item ms-auto">
+                    <div class="btn-group">
+                        <button id="save" class="btn btn-outline-secondary">💾</button>
+                        <button id="clean" class="btn btn-outline-secondary">🧽</button>
+                        <button id="restore" class="btn btn-outline-secondary">↩️</button>
+                    </div>
+                </div> -->
             </div>
         </div>
     </nav>
@@ -115,19 +122,21 @@
     </div>
 
     <div class="modal fade" id="dltModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-body">
-              <div class="row"> <div class="col-12 text-center"><p id="modalEliminar"></p></div></div>
+              <div class="row"> <div class="col-12 text-center"><p id="modalEliminar" class="mt-3"></p></div></div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-danger" id="acceptDelete">Confirmar</button>
+              <button type="button" class="btn btn-danger" id="acceptDelete">Eliminar</button>
             </div>
           </div>
         </div>
       </div>
+
     <div id="containerParaToast" class="toast-container position-fixed bottom-0 end-0 p-3">
+
     </div>
 
     <!-- Bootstrap usando una copia local -->

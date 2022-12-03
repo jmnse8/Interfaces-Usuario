@@ -28,6 +28,7 @@ import * as U from './util.js'
 // Función que refresca toda la interfaz. Debería llamarse tras cada operación
 //
 function update() {
+    console.log('UPDATE()');
     try {
         // vaciamos los contenedores
         U.clean("#users");
@@ -136,6 +137,20 @@ function update() {
     } catch (e) {
         console.log('Error actualizando', e);
     }
+}
+
+/* U.one("#save").addEventListener('click', () => Cm.saveState());
+U.one("#clean").addEventListener('click', () => localStorage.clear());
+U.one("#restore").addEventListener('click', () => {
+    Cm.restoreState();
+    update()
+}); */
+export function save(){
+    return Cm.saveState()
+}
+export function restore(token) {
+    Cm.restoreState(token);
+    update()
 }
 
 //

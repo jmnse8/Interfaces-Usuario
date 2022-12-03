@@ -595,6 +595,8 @@ function getResults(pattern) {
     console.log(`copia guardada ${randomToken}; copias de seguridad existentes`, stack);
 
     localStorage.setItem(randomToken, JSON.stringify(state));
+
+    //console.log(JSON.parse(localStorage.getItem(randomToken)));
     return randomToken;
 }
 
@@ -621,6 +623,7 @@ function restoreState(token) {
     }
     console.log(`restaurada: ${token}; copias de seguridad existentes`, stack);
 
+    //console.log(JSON.parse(localStorage.getItem(token)));
     state = updateState(JSON.parse(localStorage.getItem(token)));
 }
 

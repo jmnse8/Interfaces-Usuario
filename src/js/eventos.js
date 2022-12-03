@@ -331,21 +331,23 @@ export function bindRmCourseRow(clickSelector) {
         p.innerHTML = V.deleteMessageModal(name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
+            const token = C.save();
             const card = e.target.closest(".card");
             const id = card.dataset.id;
             console.log(e, id);
             Cm.rmCourse(id);
             card.remove();
             C.modalDelete.hide();
-
-            const token = Cm.saveState();
+ 
+            
             U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + name, id));
             const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
             U.one("#toastButton" + id).addEventListener("click", e=>{
-                Cm.restoreState(token);
+                C.restore(token);
                 t.hide();
             });
             t.show();
+            acceptButton.removeEventListener('click', acceptListener);
         };
         acceptButton.addEventListener("click", acceptListener);
     }));
@@ -361,6 +363,7 @@ export function bindRmUserRow(clickSelector) {
         p.innerHTML = V.deleteMessageModal(name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
+            const token = C.save();
             const card = e.target.closest(".card");
             const id = card.dataset.id;
             console.log(e, id);
@@ -368,15 +371,15 @@ export function bindRmUserRow(clickSelector) {
             card.remove();
             C.modalDelete.hide();
 
-            const token = Cm.saveState();
            
             U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + name, id));
             const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
             U.one("#toastButton" + id).addEventListener("click", e=>{
-                Cm.restoreState(token);
+                C.restore(token);
                 t.hide();
             });
             t.show();
+            acceptButton.removeEventListener('click', acceptListener);
         };
         acceptButton.addEventListener("click", acceptListener);
     }));
