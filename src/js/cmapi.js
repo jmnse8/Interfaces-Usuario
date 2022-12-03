@@ -576,6 +576,54 @@ function getResults(pattern) {
     return U.clone(r);
 }
 
+/**
+ * Salva el estado actual, y permite recuperarlo via restoreState
+ * @returns {string} token
+ */
+ function saveState() {
+    const randomToken = U.randomString(8);
+
+    // add token to stack
+    let stack = localStorage.getItem('stack');
+    if (!stack) {
+        stack = [];
+    } else {
+        stack = JSON.parse(stack);
+    }
+    stack.push(randomToken);
+    localStorage.setItem('stack', JSON.stringify(stack));
+    console.log(`copia guardada ${randomToken}; copias de seguridad existentes`, stack);
+
+    localStorage.setItem(randomToken, JSON.stringify(state));
+    return randomToken;
+}
+
+/**
+ * Restaura un estado previamente guardado
+ * @param {string} token 
+ */
+function restoreState(token) {
+
+    // if no token specified, pop token from stack
+    let stack = localStorage.getItem('stack');
+    if (!token) {
+        if (!stack) {
+            stack = [];
+        } else {
+            stack = JSON.parse(stack);
+        }
+        if (!stack.length) {
+            throw Error("No token specified, and state-stack is empty");
+        } else {
+            token = stack.pop();
+            localStorage.setItem('stack', JSON.stringify(stack));
+        }
+    }
+    console.log(`restaurada: ${token}; copias de seguridad existentes`, stack);
+
+    state = updateState(JSON.parse(localStorage.getItem(token)));
+}
+
 // cosas que estarán disponibles desde fuera de este módulo
 // todo lo que NO se mencione aquí es privado (= inaccesible) desde fuera
 // podríamos haber evitado esto añadiendo `export` a todas las funciones "públicas"
@@ -610,6 +658,10 @@ export {
     getEditions,
     getResults,
 
+    // salva el estado actual (a localStorage; devuelve ID asignado)
+    saveState,
+    // restaura un estado previamente guardado
+    restoreState,
     // para añadir o eliminar profes o alumnos de ediciones, 
     //   usa setEdition y modifica las listas de IDs de alumnos y/o profesores
 
