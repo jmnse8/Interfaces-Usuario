@@ -62,6 +62,7 @@ function update() {
                     () => U.one(`#d${id}`).click());
                 update();
             });
+
         E.bindDetailsUser("#users .edition-link", '#details',
             (id) => V.createDetailsForUser(Cm.resolve(id)),
             (id) => {
@@ -142,6 +143,8 @@ function update() {
 // No pongas código de este tipo en ningún otro sitio
 //Añadido export para poder usarlo en eventos :(
 export const modalEdit = new bootstrap.Modal(document.querySelector('#cmModal'));
+
+export const modalDelete = new bootstrap.Modal(document.querySelector('#dltModal'));
 
 
 Cm.init()

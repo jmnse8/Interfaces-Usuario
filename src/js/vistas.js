@@ -291,11 +291,6 @@ function courseCard(course, editions, results) {
             </div>
             <div class="row">
                 <div class="col-auto">
-                    <p><b>Ediciones:</b></p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-auto">
                     ${ratings.join(' ')}
                     <button data-year="${year}"
                         title="Crea una edición ${year} para el curso ${course.name}"
@@ -722,5 +717,12 @@ export function prepareAddSelectedUserModal() {
         </div>
         <button style="display: none" type="submit">Invisible, sólo para validación</button>
     </form>
+    `;
+}
+
+export function deleteMessageModal(message) {
+
+    return `
+    ¿Estás seguro de que deseas borrar ${message} ?
     `;
 }

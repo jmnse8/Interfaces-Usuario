@@ -149,7 +149,7 @@
   .selectAnimation {
     background-color: rgba(82, 221, 44, 0.915) !important;
     position: relative;
-    animation: selected 0.2s linear infinite;
+    animation: selected 0.2s linear 1;
   }
 
   @keyframes selected {

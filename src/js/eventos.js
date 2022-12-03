@@ -22,14 +22,14 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.dataset.id || e.target.closest(".card").dataset.id;
         console.log(e, id);
-        let idDiv = detailsSelector+e.target.dataset.name;
-        
+        let idDiv = detailsSelector + e.target.dataset.name;
+
         const elemento = U.one(idDiv);//;
-        
+
         elemento.innerHTML = htmlGenerationFn(id);
         elemento.closest('.card').style.width = '90%';
 
-        
+
         //Contendo de listenersFn(id); traido aquí ya que la linea 51 salta excepción pero hace que funcione, de la forma normal no se  porque no va
         const edition = Cm.resolve(id);
 
@@ -49,32 +49,32 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
         //update();
 
         // toggle boton de filtro avanzado
-        alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details"+edition.id, "#search-in-students-input"+edition.id, "#filter-in-students"+edition.id);
+        alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-edition-details" + edition.id, "#search-in-students-input" + edition.id, "#filter-in-students" + edition.id);
         //botón reset filtro avanzado
-        document.querySelector("#reset-search-advanced-edition-details"+edition.id).addEventListener('click', e => {
-            removeStudentFilter("#filter-in-students"+edition.id, ".student-table-row");
+        document.querySelector("#reset-search-advanced-edition-details" + edition.id).addEventListener('click', e => {
+            removeStudentFilter("#filter-in-students" + edition.id, ".student-table-row");
         });
 
         //Evento de filtro avanzado
-        document.querySelectorAll("#filter-in-students"+edition.id+ " input, #filter-in-students"+edition.id+ " select").forEach(o =>{
+        document.querySelectorAll("#filter-in-students" + edition.id + " input, #filter-in-students" + edition.id + " select").forEach(o => {
             o.addEventListener('input', e => {
-                advancedStudentFilter("#filter-in-students"+edition.id, ".student-table-row");
+                advancedStudentFilter("#filter-in-students" + edition.id, ".student-table-row");
             })
         });
 
 
 
         //Metido esta linea aquí porque he quitado el update de arriba
-        bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
-        bindSearch("#search-in-students-input"+edition.id, ".student-table-row");
-        bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
-        
+        bindRmFromEdition(".rm-from-edition", () => { });//quitado update para que no cierre la vista ¿?
+        bindSearch("#search-in-students-input" + edition.id, ".student-table-row");
+        bindSearch("#search-in-teachers-input" + edition.id, ".teacher-table-row");
+
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
         //document.querySelector(idDiv) = elemento;
-        
+
 
         //listenersFn(id);//esta linea no se llega a ejecutar
-        
+
     }))
 }
 
@@ -82,10 +82,10 @@ export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.dataset.id || e.target.closest(".card").dataset.id;
         console.log(e, id);
-        let idDiv = detailsSelector+e.target.dataset.name;
-        
+        let idDiv = detailsSelector + e.target.dataset.name;
+
         const elemento = U.one(idDiv);//;
-        
+
         //console.log(htmlGenerationFn(id));
 
         elemento.innerHTML = htmlGenerationFn(id);
@@ -93,7 +93,7 @@ export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn
 
 
 
-        
+
         //Contendo de listenersFn(id); traido aquí ya que la linea 51 salta excepción pero hace que funcione, de la forma normal no se  porque no va
         const user = Cm.resolve(id);
 
@@ -101,18 +101,18 @@ export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn
 
         bindSetResults(".set-result", () => U.one(`#d${id}`).click());
 
-        
+
         //Metido esta linea aquí porque he quitado el update de arriba
-        bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
-        bindSearch("#search-in-user-editions-input"+user.id, ".user-edition-table-row");
+        bindRmFromEdition(".rm-from-edition", () => { });//quitado update para que no cierre la vista ¿?
+        bindSearch("#search-in-user-editions-input" + user.id, ".user-edition-table-row");
         //bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
-        
+
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
         //document.querySelector(idDiv) = elemento;
-        
+
 
         //listenersFn(id);//esta linea no se llega a ejecutar
-        
+
     }))
 }
 
@@ -125,61 +125,71 @@ export function bindSelectCard(clickSelector, callback) {
     }));
 }
 
-function selectedCard(){
+function selectedCard() {
     let cont = 0;
-    U.all('.user-card').forEach( c => {
-            if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length > 0)
-                cont++;
+    U.all('.user-card').forEach(c => {
+        if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length > 0)
+            cont++;
     });
-    if(cont > 0){
+    if (cont > 0) {
         U.one('#selectedOptions').style.display = '';
-        if(cont == 1)
+        if (cont == 1)
             U.one('#textSelOp').textContent = cont + ' USUARIO SELECCIONADO';
         else
             U.one('#textSelOp').textContent = cont + ' USUARIOS SELECCIONADOS';
     }
-    else{
+    else {
         U.one('#selectedOptions').style.display = 'none';
     }
 }
 
-export function selectAllCard(){
+export function selectAllCard() {
     let btn = U.one('#selectAllCards');
-    if(btn.innerText === 'Deseleccionar todos'){
-        U.all('.user-card').forEach( c => {
+    if (btn.innerText === 'Deseleccionar todos') {
+        U.all('.user-card').forEach(c => {
             c.classList.toggle('selectAnimation');
         });
-        
+
         btn.innerText = 'Seleccionar todos';
         U.one('#textSelOp').textContent = '0 USUARIOS SELECCIONADOS';
         U.one('#selectedOptions').style.display = 'none';
     }
-    else{
+    else {
         let cont = 0;
-        U.all('.user-card').forEach( c => {
-            if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length == 0)
+        U.all('.user-card').forEach(c => {
+            if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length == 0)
                 c.classList.toggle('selectAnimation');
             cont++;
         });
-        if(cont == 1)
+        if (cont == 1)
             U.one('#textSelOp').textContent = cont + ' USUARIO SELECCIONADO';
         else
             U.one('#textSelOp').textContent = cont + ' USUARIOS SELECCIONADOS';
-        
+
         btn.innerText = 'Deseleccionar todos';
     }
-    
+
 }
 
-export function removeSelCards(){
-    U.all('.user-card').forEach( c => {
-        if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0){
-            const id = c.dataset.id;
-            Cm.rmUser(id);
-            c.remove();
-            U.one('#selectedOptions').style.display = 'none';
-        }
-    });
+export function removeSelCards() {
+    C.modalDelete.show();
+    const p = U.one("#modalEliminar");
+    p.innerHTML = V.deleteMessageModal(" la selección ");
+    const acceptButton = U.one("#acceptDelete");
+    const acceptListener = ae => {
+        U.all('.user-card').forEach(c => {
+            if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0) {
+                const id = c.dataset.id;
+                Cm.rmUser(id);
+                c.remove();
+                U.one('#selectedOptions').style.display = 'none';
+            }
+        });
+        C.modalDelete.hide();
+    };
+    acceptButton.addEventListener("click", acceptListener);
+
+
 }
 
 export function addSelCards(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
@@ -193,7 +203,7 @@ export function addSelCards(clickSelector, formTitleSelector, formSelector, form
         modalFn().show();
         const form = U.one(formSelector);
         U.one(formTitleSelector).innerHTML = formTitleFn();
-        
+
         form.innerHTML = formContentsFn();
 
         U.one('#cursoModal').addEventListener('change', e => {
@@ -210,14 +220,14 @@ export function addSelCards(clickSelector, formTitleSelector, formSelector, form
         const acceptListener = ae => {
             const edicionId = form.querySelector("select[name=edicion]").value;
             const edition = Cm.resolve(edicionId);
-            U.all('.user-card').forEach( c => {
-                if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0){
+            U.all('.user-card').forEach(c => {
+                if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0) {
                     c.classList.toggle('selectAnimation');
                     const dni = c.querySelector('.user-dni').innerText;
                     const candidates = Cm.getUsers({ dni });
-                    if(candidates[0].role == Cm.UserRole.STUDENT)
+                    if (candidates[0].role == Cm.UserRole.STUDENT)
                         edition.students.push(candidates[0].id)
-                    else if(candidates[0].role == Cm.UserRole.TEACHER)
+                    else if (candidates[0].role == Cm.UserRole.TEACHER)
                         edition.teachers.push(candidates[0].id);
                 }
             });
@@ -230,48 +240,65 @@ export function addSelCards(clickSelector, formTitleSelector, formSelector, form
         acceptButton.addEventListener('click', acceptListener);
     });
 };
-    
+
 
 
 
 
 // función para meter click event a el botón de minimizar la edición
-function bindMinEdition(idDiv, id){
+function bindMinEdition(idDiv, id) {
     //console.log('creaMini');
     //console.log(U.one('#mini-'+idDiv));
-    let idBtn = '#mini-'+idDiv;
+    let idBtn = '#mini-' + idDiv;
     U.one(idBtn).addEventListener('click', e => {
         console.log('minimiza');
         const elemento = U.one(id);//;
-        
+
         elemento.innerHTML = '';
         elemento.closest('.card').style.width = '20em';
         //document.querySelector(id) = elemento;
     });
-    
+
 }
 
 
 export function bindRmFromEdition(clickSelector, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const userId = e.target.closest('tr').dataset.userId;
-        const editionId = e.target.closest('tr').dataset.editionId;
-        console.log(e, userId, editionId);
-        const edition = Cm.resolve(editionId);
-        edition.students = edition.students.filter(o => o != userId);
-        edition.teachers = edition.students.filter(o => o != userId);
-        Cm.setEdition(edition);
-        e.target.closest("tr").remove();
-        callback();
+        C.modalDelete.show();
+        const p = U.one("#modalEliminar");
+        console.log(Cm.resolve(e.target.closest('tr').dataset.userId).name);
+        p.innerHTML = V.deleteMessageModal(Cm.resolve(e.target.closest('tr').dataset.userId).name + " de " + Cm.resolve(e.target.closest('tr').dataset.editionId).name);
+        const acceptButton = U.one("#acceptDelete");
+        const acceptListener = ae => {
+            const userId = e.target.closest('tr').dataset.userId;
+            const editionId = e.target.closest('tr').dataset.editionId;
+            console.log(e, userId, editionId);
+            const edition = Cm.resolve(editionId);
+            edition.students = edition.students.filter(o => o != userId);
+            edition.teachers = edition.students.filter(o => o != userId);
+            Cm.setEdition(edition);
+            e.target.closest("tr").remove();
+            C.modalDelete.hide();
+            callback();
+        };
+        acceptButton.addEventListener("click", acceptListener);
     }));
 }
 
 export function bindRmEditionDetails(clickSelector, callback) {
     U.one(clickSelector).addEventListener('click', e => {
-        const id = e.target.dataset.id;
-        console.log(e, id);
-        Cm.rmEdition(id);
-        callback();
+        C.modalDelete.show();
+        const p = U.one("#modalEliminar");
+        p.innerHTML = V.deleteMessageModal(Cm.resolve(e.target.dataset.id).name);
+        const acceptButton = U.one("#acceptDelete");
+        const acceptListener = ae => {
+            const id = e.target.dataset.id;
+            console.log(e, id);
+            Cm.rmEdition(id);
+            C.modalDelete.hide();
+            callback();
+        };
+        acceptButton.addEventListener("click", acceptListener);
     });
 }
 
@@ -287,21 +314,37 @@ export function bindAddEditionToCourse(clickSelector, callback) {
 
 export function bindRmCourseRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const card = e.target.closest(".card");
-        const id = card.dataset.id;
-        console.log(e, id);
-        Cm.rmCourse(id);
-        card.remove();
+        C.modalDelete.show();
+        const p = U.one("#modalEliminar");
+        p.innerHTML = V.deleteMessageModal(e.target.closest(".card").querySelector(".course-name").innerText);
+        const acceptButton = U.one("#acceptDelete");
+        const acceptListener = ae => {
+            const card = e.target.closest(".card");
+            const id = card.dataset.id;
+            console.log(e, id);
+            Cm.rmCourse(id);
+            card.remove();
+            C.modalDelete.hide();
+        };
+        acceptButton.addEventListener("click", acceptListener);
     }));
 }
 
 export function bindRmUserRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const card = e.target.closest(".card");
-        const id = card.dataset.id;
-        console.log(e, id);
-        Cm.rmUser(id);
-        card.remove();
+        C.modalDelete.show();
+        const p = U.one("#modalEliminar");
+        p.innerHTML = V.deleteMessageModal(e.target.closest(".card").querySelector(".user-name").innerText);
+        const acceptButton = U.one("#acceptDelete");
+        const acceptListener = ae => {
+            const card = e.target.closest(".card");
+            const id = card.dataset.id;
+            console.log(e, id);
+            Cm.rmUser(id);
+            card.remove();
+            C.modalDelete.hide();
+        };
+        acceptButton.addEventListener("click", acceptListener);
     }));
 }
 
@@ -385,7 +428,7 @@ export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector
 
 export function bindAddOrEditCourse(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
     modalFn, formTitleFn, formContentsFn, callback) {
-        
+
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.closest(".card") ?
             e.target.closest(".card").dataset.id :
@@ -500,8 +543,8 @@ export function bindSortColumn(clickSelector) {
         // devuelve una función de comparación para 2 elementos, sobre col. idx, creciente o no (asc)
         const comparador = (idx, asc) => (a, b) => ((v1, v2) =>
             v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ?
-            v1 - v2 :
-            v1.toString().localeCompare(v2)
+                v1 - v2 :
+                v1.toString().localeCompare(v2)
         )(valueAt(asc ? a : b, idx), valueAt(asc ? b : a, idx));
 
         // comprueba y actualiza asc (ascendente)
@@ -526,7 +569,7 @@ export function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada
             normal.style.display = visible ? '' : 'none';
         });
     avanzado.style.display = 'none';
-    
+
 }
 
 export function advancedUserFilter(filterSel, rowSel) {
@@ -540,13 +583,13 @@ export function advancedUserFilter(filterSel, rowSel) {
     for (let r of document.querySelectorAll(rowSel)) {
         let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
 
-        if(name !== '')
+        if (name !== '')
             ok1 = (r.querySelector('.user-name').innerText.toLowerCase().indexOf(name)) ? false : true;
-        if(role !== '')
+        if (role !== '')
             ok2 = (r.querySelector('.user-role').innerText.toLowerCase().indexOf(role)) ? false : true;
-        if(email !== '')  
+        if (email !== '')
             ok3 = (r.querySelector('.user-email').innerText.toLowerCase().indexOf(email)) ? false : true;
-        if(dni !== ''){
+        if (dni !== '') {
             ok4 = (r.querySelector('.user-dni').innerText.toLowerCase().indexOf(dni)) ? false : true;
         }
         let ok = (ok1 && ok2 && ok3 && ok4) ? true : false;
@@ -565,17 +608,17 @@ export function advancedCourseFilter(filterSel, rowSel) {
     for (let r of document.querySelectorAll(rowSel)) {
         let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
 
-        if(name !== '')
+        if (name !== '')
             ok1 = (r.querySelector('.course-name').innerText.toLowerCase().indexOf(name)) ? false : true;
-        if(area !== '')
+        if (area !== '')
             ok2 = (r.querySelector('.course-area').innerText.toLowerCase().indexOf(area)) ? false : true;
-        if(level !== '')  
+        if (level !== '')
             ok3 = (r.querySelector('.course-level').innerText.toLowerCase().indexOf(level)) ? false : true;
-        if(year !== ''){
+        if (year !== '') {
             let years = r.querySelectorAll('.course-year');
-            if(years !== null){
-                for(let y of years){
-                    if(!ok4)
+            if (years !== null) {
+                for (let y of years) {
+                    if (!ok4)
                         break;
                     ok4 = (y.innerText.toLowerCase().indexOf(year)) ? false : true;
                 }
@@ -600,12 +643,12 @@ function advancedStudentFilter(filterSel, rowSel) {
 
     for (let r of document.querySelectorAll(rowSel)) {
         let ok = true;
-        for (let [f, col] of 
+        for (let [f, col] of
             [[name, 0], [email, 1], [dni, 2], [nota, 3]]) {
-                if (f == '' || ! ok) continue;
-                const v = valueAt(r, col).toLowerCase();
-                //console.log(v, f, col, v.indexOf(f));
-                if (v.indexOf(f) == -1) ok = false;
+            if (f == '' || !ok) continue;
+            const v = valueAt(r, col).toLowerCase();
+            //console.log(v, f, col, v.indexOf(f));
+            if (v.indexOf(f) == -1) ok = false;
         }
         r.style.display = ok ? '' : 'none';
     }
@@ -635,7 +678,7 @@ function removeStudentFilter(filterSel, rowSel) {
 
 
 export function removeUserFilter(filterSel, rowSel) {
-     console.log('hola')
+    console.log('hola')
     const filterDiv = document.querySelector(filterSel);
     filterDiv.querySelector("input[name=name]").value = '';
     filterDiv.querySelector("input[name=dni]").value = '';
@@ -644,11 +687,22 @@ export function removeUserFilter(filterSel, rowSel) {
     for (let r of document.querySelectorAll(rowSel)) {
         r.style.display = '';
     }
- }
+}
 
- export function deleteCard(clickSelector){
+export function deleteCard(clickSelector, pSelector, pContent, acceptSelector, modalFn) {
+
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        
+        modalFn().show();
+        const p = U.one(pSelector);
+        p.innerHTML = pContent;
+        const acceptButton = U.one(acceptSelector);
+        const acceptListener = ae => {
+            const card = e.target.closest(".card");
+            const id = card.dataset.id;
+            console.log(e, id);
+            Cm.rmUser(id);
+            card.remove();
+        };
+        acceptButton.addEventListener("click", acceptListener);
     }));
- }
- 
+}
