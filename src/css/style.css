@@ -131,6 +131,8 @@
     background-color: rgba(255, 255, 255, 0.793) !important;
   }
 
+  
+
   @keyframes glowing {
     0% {
       background-position: 0 0;
@@ -142,6 +144,30 @@
       background-position: 0 0;
     }
   }
+
+
+  .selectAnimation {
+    background-color: rgba(82, 221, 44, 0.915) !important;
+    position: relative;
+    animation: selected 0.2s linear infinite;
+  }
+
+  @keyframes selected {
+    0% {
+      transform: skewY(0.7deg);
+    }
+    50% {
+      transform: skewY(-0.7deg);
+    }
+    100% {
+      transform: skewY(0.7deg);
+    }
+  }
+
+  .selectCardUser {
+    cursor: pointer;
+  }
+  
 /* 
   #users {
     background-color: #fff;

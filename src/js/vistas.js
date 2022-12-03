@@ -69,53 +69,40 @@ function userCard(user, editions) {
     return `
     <div data-id="${user.id}" class="card m-3 card-perso user-card" style="width: 20em;">
         <div class="card-body">
-            <div class="row">
-                <div class="col-sm-7">
-                    <h5 class="card-title user-name">${user.name}</h5>
+            <div class="selectCardUser">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h5 class="card-title user-name">${user.name}</h5>
+                    </div>
+                    <div class="col-sm-3 text-md-end">
+                        <span class="${roleClasses[user.role]} user-role">${user.role}</span>
+                    </div>
                 </div>
-                <div class="col-sm-5 text-md-end">
+
+                <div class="row">
+                    <div class="col-sm-auto user-dni text-center">
+                        ${user.dni}
+                    </div>
+                    <div class="col-sm-auto user-email text-center">
+                        ${user.email}
+                    </div>
+                </div>
+            </div>
+            <div class="row m-2">
+                <div class="col-12 d-flex flex-wrap justify-content-evenly">
+                    <button id="d${user.id}" data-id="${user.id}" data-name="${user.name.replace(/\s/g, '')}" title="Muestra las ediciones en las que figura ${user.name}" 
+                    class="edition-link btn btn-outline-secondary btn-sm position-relative">👁️
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
+                        ${Math.max(matriculas.length, docencia.length)}
+                        <span class="visually-hidden">número de ediciones en las que es alumno y/ó profesor</span>
+                    </span>
+                    </button>
+
                     <button title="Edita el usuario ${user.name}" 
                         class="set-user btn btn-outline-primary btn-sm">✏️</button>
+
                     <button title="Elimina a ${user.name} del sistema, y de todas las ediciones" 
                         class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-auto">
-                    <p><b>Rol:</b></p>
-                </div>
-                <div class="col-auto">
-                    <span class="${roleClasses[user.role]} user-role">${user.role}</span>
-                </div>
-                
-            </div>
-            <div class="row">
-                <div class="col-auto">
-                    <p><b>Correo:</b></p>
-                </div>
-                <div class="col-auto user-email">
-                    ${user.email}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-auto">
-                    <p><b>Dni:</b></p>
-                </div>
-                <div class="col-auto user-dni">
-                    ${user.dni}
-                </div>
-                <div class="col-auto">
-                    <p title="número de ediciones en las que es alumno y/ó profesor"><b>A/P:</b></p>
-                </div>
-                <div class="col-auto">
-                    ${Math.max(matriculas.length, docencia.length)}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <button id="d${user.id}" data-id="${user.id}" data-name="${user.name.replace(/\s/g, '')}" title="Muestra las ediciones en las que figura ${user.name}" 
-                    class="edition-link btn btn-outline-secondary btn-sm">👁️</button>
                 </div>
             </div>
             <div id="details${user.name.replace(/\s/g, '')}">
@@ -135,6 +122,7 @@ export function createUserTable(users) {
             class="add-user btn btn-outline-primary glow-button">➕</button>`
     /* AÑADIDO BOTÓN FILTRO */
     return `
+    <div>
     <h4 class="mt-3">Usuarios</h4>
 
     <div class="row">
@@ -147,7 +135,6 @@ export function createUserTable(users) {
             <button id="search-advanced-toggle-user-table" title="Búsqueda avanzada"
                 class="btn btn-outline-secondary">📝</button>
         </div>
-
         <div class="col text-end">${botonNuevoUsuario}</div>
     </div>
 
@@ -184,8 +171,29 @@ export function createUserTable(users) {
         </div>
     </div>
 
+    
+    <div class="row align-items-center bg-light m-2 p-2 border border-2 rounded" id="selectedOptions" style="display: none;">
+        <div class="col">
+            <div class="row align-items-center">
+            <div class="col text-center">
+                <p id="textSelOp" class="m-auto">5 usuarios seleccionados</p></div>
+                <div class="col">
+                <button id="selectAllCards" title="Seleccionar todas las cartas"
+                    class="btn btn-outline-secondary">Seleccionar todos</button></div>
+            </div>
+        </div>
+        <div class="col text-end">
+            <div class="btn-group" role="group">
+                <button id="removeSelCards" title="Borrar seleccionados" class="btn btn-danger">Borrar</button>
+                <button id="addSelCards" title="Matricular seleccionados" class="btn btn-secondary">Matricular</button>
+            </div>
+        </div>
+    </div>
+        
+
     <div class="d-flex flex-wrap justify-content-evenly">
         ${filas}  
+    </div>
     </div>
  `;
 }
@@ -690,6 +698,29 @@ export function prepareAddOrEditCourseModal(prev) {
                 </select>
             </div>
        <button style="display: none" type="submit">Invisible, sólo para validación</button>
+    </form>
+    `;
+}
+
+export function prepareAddSelectedUserModal() {
+    let cursos = Cm.getCourses('');
+    let optionsC = cursos.map(c => `<option value="${c.id}">${c.name}</option>`).join();
+    let optionsE = Cm.getEditions().filter(o => o.course == cursos[0].id).map(e =>
+        `<option value="${e.id}">${e.year}</option>`).join();
+
+    return `
+    <form class="row">
+        <div class="col-md-12 m-1">
+            <select class="form-select" id="cursoModal" name="curso" required>
+                ${optionsC}
+            </select>
+        </div>
+        <div class="col-md-12 m-1">
+            <select class="form-select" id="edicionModal" name="edicion" required>
+                ${optionsE}
+            </select>
+        </div>
+        <button style="display: none" type="submit">Invisible, sólo para validación</button>
     </form>
     `;
 }

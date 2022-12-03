@@ -70,10 +70,10 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
         bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
         
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
-        document.querySelector(idDiv) = elemento;
+        //document.querySelector(idDiv) = elemento;
         
 
-        listenersFn(id);//esta linea no se llega a ejecutar
+        //listenersFn(id);//esta linea no se llega a ejecutar
         
     }))
 }
@@ -86,7 +86,7 @@ export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn
         
         const elemento = U.one(idDiv);//;
         
-        console.log(htmlGenerationFn(id));
+        //console.log(htmlGenerationFn(id));
 
         elemento.innerHTML = htmlGenerationFn(id);
         elemento.closest('.card').style.width = '90%';
@@ -101,20 +101,138 @@ export function bindDetailsUser(clickSelector, detailsSelector, htmlGenerationFn
 
         bindSetResults(".set-result", () => U.one(`#d${id}`).click());
 
-
+        
         //Metido esta linea aquí porque he quitado el update de arriba
         bindRmFromEdition(".rm-from-edition", () => {});//quitado update para que no cierre la vista ¿?
         bindSearch("#search-in-user-editions-input"+user.id, ".user-edition-table-row");
         //bindSearch("#search-in-teachers-input"+edition.id, ".teacher-table-row");
         
         //lo que hace que se actualice la tarjeta con las cosas nuevas(salta excepción)
-        document.querySelector(idDiv) = elemento;
+        //document.querySelector(idDiv) = elemento;
         
 
-        listenersFn(id);//esta linea no se llega a ejecutar
+        //listenersFn(id);//esta linea no se llega a ejecutar
         
     }))
 }
+
+export function bindSelectCard(clickSelector, callback) {
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        e.target.closest('.user-card').classList.toggle('selectAnimation');
+
+        selectedCard();
+        //const options = U.one('#selectedOptions');
+    }));
+}
+
+function selectedCard(){
+    let cont = 0;
+    U.all('.user-card').forEach( c => {
+            if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length > 0)
+                cont++;
+    });
+    if(cont > 0){
+        U.one('#selectedOptions').style.display = '';
+        if(cont == 1)
+            U.one('#textSelOp').textContent = cont + ' USUARIO SELECCIONADO';
+        else
+            U.one('#textSelOp').textContent = cont + ' USUARIOS SELECCIONADOS';
+    }
+    else{
+        U.one('#selectedOptions').style.display = 'none';
+    }
+}
+
+export function selectAllCard(){
+    let btn = U.one('#selectAllCards');
+    if(btn.innerText === 'Deseleccionar todos'){
+        U.all('.user-card').forEach( c => {
+            c.classList.toggle('selectAnimation');
+        });
+        
+        btn.innerText = 'Seleccionar todos';
+        U.one('#textSelOp').textContent = '0 USUARIOS SELECCIONADOS';
+        U.one('#selectedOptions').style.display = 'none';
+    }
+    else{
+        let cont = 0;
+        U.all('.user-card').forEach( c => {
+            if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length == 0)
+                c.classList.toggle('selectAnimation');
+            cont++;
+        });
+        if(cont == 1)
+            U.one('#textSelOp').textContent = cont + ' USUARIO SELECCIONADO';
+        else
+            U.one('#textSelOp').textContent = cont + ' USUARIOS SELECCIONADOS';
+        
+        btn.innerText = 'Deseleccionar todos';
+    }
+    
+}
+
+export function removeSelCards(){
+    U.all('.user-card').forEach( c => {
+        if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0){
+            const id = c.dataset.id;
+            Cm.rmUser(id);
+            c.remove();
+            U.one('#selectedOptions').style.display = 'none';
+        }
+    });
+}
+
+export function addSelCards(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
+    modalFn, formTitleFn, formContentsFn, callback) {
+
+    U.one(clickSelector).addEventListener('click', e => {
+        //const id = e.target.dataset.id;
+        console.log('aaaaaaaaaaa');
+        //const edition = Cm.resolve(id);
+
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn();
+        
+        form.innerHTML = formContentsFn();
+
+        U.one('#cursoModal').addEventListener('change', e => {
+            //console.log(e.target.selectedOptions[0], e.currentTarget.selectedOptions[0]);
+            console.log(e.target.selectedOptions[0].value);
+            let optionsE = Cm.getEditions().filter(o => o.course == e.target.selectedOptions[0].value).map(ed =>
+                `<option value="${ed.id}">${ed.year}</option>`).join();
+            console.log(optionsE);
+            U.clean('#edicionModal');
+            U.add('#edicionModal', optionsE);
+        });
+
+        const acceptButton = U.one(formAcceptSelector);
+        const acceptListener = ae => {
+            const edicionId = form.querySelector("select[name=edicion]").value;
+            const edition = Cm.resolve(edicionId);
+            U.all('.user-card').forEach( c => {
+                if(Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0){
+                    c.classList.toggle('selectAnimation');
+                    const dni = c.querySelector('.user-dni').innerText;
+                    const candidates = Cm.getUsers({ dni });
+                    if(candidates[0].role == Cm.UserRole.STUDENT)
+                        edition.students.push(candidates[0].id)
+                    else if(candidates[0].role == Cm.UserRole.TEACHER)
+                        edition.teachers.push(candidates[0].id);
+                }
+            });
+            Cm.setEdition(edition);
+            modalFn().hide();
+            U.one('#selectedOptions').style.display = 'none';
+            acceptButton.removeEventListener('click', acceptListener);
+            callback();
+        }
+        acceptButton.addEventListener('click', acceptListener);
+    });
+};
+    
+
+
 
 
 // función para meter click event a el botón de minimizar la edición
@@ -128,7 +246,7 @@ function bindMinEdition(idDiv, id){
         
         elemento.innerHTML = '';
         elemento.closest('.card').style.width = '20em';
-        document.querySelector(id) = elemento;
+        //document.querySelector(id) = elemento;
     });
     
 }
@@ -531,6 +649,6 @@ export function removeUserFilter(filterSel, rowSel) {
  export function deleteCard(clickSelector){
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         
-    }
+    }));
  }
  

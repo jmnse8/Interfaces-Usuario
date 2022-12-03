@@ -87,6 +87,10 @@ function update() {
         //E.bindSearch("#search-in-teachers-input", ".teacher-table-row");
         //E.bindSearch("#search-in-students-input", ".student-table-row");
         E.bindSearch("#search-in-user-editions-input", ".user-edition-table-row");
+        
+
+            E.bindSelectCard(".selectCardUser");
+
 
         E.bindSortColumn("tr>th");
 
@@ -116,6 +120,18 @@ function update() {
                 E.advancedCourseFilter("#filter-in-courses", ".course-card");
             })
         });
+
+        document.querySelector("#selectAllCards").addEventListener('click', e => {
+            E.selectAllCard();
+        });
+        document.querySelector("#removeSelCards").addEventListener('click', e => {
+            E.removeSelCards();
+        });
+        E.addSelCards("#addSelCards",
+        "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
+        () => `Matricular usuarios`,
+        () => V.prepareAddSelectedUserModal(),
+        () => update());
     } catch (e) {
         console.log('Error actualizando', e);
     }
