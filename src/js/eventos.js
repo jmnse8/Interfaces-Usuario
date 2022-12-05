@@ -647,7 +647,7 @@ export function advancedUserFilter(filterSel, rowSel) {
         if (name !== '')
             ok1 = (r.querySelector('.user-name').innerText.toLowerCase().indexOf(name) == -1) ? false : true;
         if (role !== '')
-            ok2 = (r.querySelector('.user-role').innerText.toLowerCase().indexOf(role)) ? false : true;
+            ok2 = (r.querySelector('.user-role').innerText.toLowerCase().indexOf(role) == -1) ? false : true;
         if (email !== '')
             ok3 = (r.querySelector('.user-email').innerText.toLowerCase().indexOf(email) == -1) ? false : true;
         if (dni !== '') {
@@ -672,9 +672,9 @@ export function advancedCourseFilter(filterSel, rowSel) {
         if (name !== '')
             ok1 = (r.querySelector('.course-name').innerText.toLowerCase().indexOf(name) == -1) ? false : true;
         if (area !== '')
-            ok2 = (r.querySelector('.course-area').innerText.toLowerCase().indexOf(area)) ? false : true;
+            ok2 = (r.querySelector('.course-area').innerText.toLowerCase().indexOf(area) == -1) ? false : true;
         if (level !== '')
-            ok3 = (r.querySelector('.course-level').innerText.toLowerCase().indexOf(level)) ? false : true;
+            ok3 = (r.querySelector('.course-level').innerText.toLowerCase().indexOf(level) == -1) ? false : true;
         if (year !== '') {
             let years = r.querySelectorAll('.course-year');
             if (years !== null) {
