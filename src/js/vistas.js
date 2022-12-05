@@ -51,11 +51,11 @@ function userRow(user, editions) {
         <td>
         <div class="btn-group">
             <button id="d${user.id}" title="Muestra las ediciones en las que figura ${user.name}" 
-                class="edition-link btn btn-outline-secondary btn-sm"><i class="fa-solid fa-eye"></i></button>        
+                class="edition-link btn btn-outline-secondary btn-sm">👁️</button>        
             <button title="Edita el usuario ${user.name}" 
-                class="set-user btn btn-outline-primary btn-sm"><i class="fa-solid fa-pen"></i></button>
+                class="set-user btn btn-outline-primary btn-sm">✏️</button>
             <button title="Elimina a ${user.name} del sistema, y de todas las ediciones" 
-                class="rm-fila btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
         </div>
         </td>
     </tr>
@@ -91,7 +91,7 @@ function userCard(user, editions) {
             <div class="row m-2">
                 <div class="col-12 d-flex flex-wrap justify-content-evenly">
                     <button id="d${user.id}" data-id="${user.id}" data-name="${user.name.replace(/\s/g, '')}" title="Muestra las ediciones en las que figura ${user.name}" 
-                    class="edition-link btn btn-outline-secondary btn-sm position-relative"><i class="fa-solid fa-eye"></i>
+                    class="edition-link btn btn-outline-secondary btn-sm position-relative">👁️
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
                         ${Math.max(matriculas.length, docencia.length)}
                         <span class="visually-hidden">número de ediciones en las que es alumno y/ó profesor</span>
@@ -99,10 +99,10 @@ function userCard(user, editions) {
                     </button>
 
                     <button title="Edita el usuario ${user.name}" 
-                        class="set-user btn btn-outline-primary btn-sm"><i class="fa-solid fa-pen"></i></button>
+                        class="set-user btn btn-outline-primary btn-sm">✏️</button>
 
                     <button title="Elimina a ${user.name} del sistema, y de todas las ediciones" 
-                        class="rm-fila btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
                 </div>
             </div>
             <div id="details${user.name.replace(/\s/g, '')}">
@@ -128,12 +128,12 @@ export function createUserTable(users) {
     <div class="row">
         <div class="col md-auto input-group">
             <input id="search-in-users-input" type="search" class="form-control" placeholder="Filtrar" />
-            <span class="input-group-text" id="search-in-users-button"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
     
         <div class="col">
             <button id="search-advanced-toggle-user-table" title="Búsqueda avanzada"
-                class="btn btn-outline-secondary"><i class="fa-solid fa-filter"></i></button>
+                class="btn btn-outline-secondary">📝</button>
         </div>
         <div class="col text-end">${botonNuevoUsuario}</div>
     </div>
@@ -166,7 +166,7 @@ export function createUserTable(users) {
         <div class="row p-1">
             <div class="col-12 text-center">
                 <button id="reset-search-advanced-user-table" title="Reiniciar búsqueda avanzada"
-                    class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-eraser"></i></button>
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
             </div>
         </div>
     </div>
@@ -266,10 +266,10 @@ function courseCard(course, editions, results) {
                 </div>
                 <div class="col-sm-5 text-md-end">
                     <button title="Edita el curso ${course.name}"
-                        class="set-course btn btn-outline-primary btn-sm">️<i class="fa-solid fa-pen"></i></button>
+                        class="set-course btn btn-outline-primary btn-sm">✏️</button>
                     <button
                         title="Elimina el curso ${course.name} del sistema, y todas sus ediciones"
-                        class="rm-fila btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                        class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
                 </div>
             </div>
 
@@ -328,11 +328,11 @@ export function createCoursesTable(courses) {
     <div class="row">
         <div class="col md-auto input-group">
             <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar" />
-            <span class="input-group-text" id="search-in-users-button"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
         <div class="col">
             <button id="search-advanced-toggle-courses-table" title="Búsqueda avanzada"
-                class="btn btn-outline-secondary"><i class="fa-solid fa-filter"></i></button>
+                class="btn btn-outline-secondary">📝</button>
         </div>
         <div class="col text-end">${botonNuevoCurso}</div>
     </div>
@@ -371,7 +371,7 @@ export function createCoursesTable(courses) {
         <div class="row p-1">
             <div class="col-12 text-center">
                 <button id="reset-search-advanced-courses-table" title="Reiniciar búsqueda avanzada"
-                    class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-eraser"></i></button>
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
             </div>
         </div>
     </div>
@@ -394,7 +394,7 @@ function studentRow(user, edition, results) {
         <td class="text-end">${nota != null ? nota : '?'}</td>
         <td>&nbsp;
             <button title="Desmatricula a ${user.name} de ${edition.name}"                 
-                class="rm-from-edition btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
         </td>
     </tr>
     `;
@@ -408,7 +408,7 @@ function teacherRow(user, edition, results) {
         <td>${user.dni}</td>
         <td>&nbsp;
             <button title="Hace que ${user.name} deje de ser profesor de ${edition.name}" 
-                class="rm-from-edition btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
         </td>
     </tr>
     `;
@@ -424,7 +424,7 @@ export function createDetailsForEdition(edition) {
     const botonBorrado = `
         <button title="Elimina la edición ${edition.name} del sistema" 
             data-id="${edition.id}"
-            class="rm-edition btn btn-outline-danger"><i class="fa-solid fa-trash"></i></button>`
+            class="rm-edition btn btn-outline-danger">🗑️</button>`
     
     const botonMinimizar = `
     <button title="Minimiza la edición ${edition.name} del sistema" 
@@ -450,7 +450,7 @@ export function createDetailsForEdition(edition) {
     <div class="row">
         <div class="col md-auto input-group">
             <input id="search-in-teachers-input${edition.id}" type="search" class="form-control" placeholder="Filtrar" />
-            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span class="input-group-text">🔍</span>
         </div>
         
         <div class="col text-end">${botonMatricula("profesor")}</div>
@@ -469,11 +469,11 @@ export function createDetailsForEdition(edition) {
     <div class="row">
         <div class="col md-auto input-group">
             <input id="search-in-students-input${edition.id}" type="search" class="form-control" placeholder="Filtrar" />
-            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span class="input-group-text">🔍</span>
         </div>
         <div class="col">
             <button id="search-advanced-toggle-edition-details${edition.id}" title="Búsqueda avanzada"
-                class="btn btn-outline-secondary"><i class="fa-solid fa-filter"></i></button>
+                class="btn btn-outline-secondary">📝</button>
         </div>
         <div class="col text-end">${botonMatricula("alumno")}</div>
     </div>
@@ -500,7 +500,7 @@ export function createDetailsForEdition(edition) {
         <div class="row p-1">
             <div class="col-12 text-center">
                 <button id="reset-search-advanced-edition-details${edition.id}" title="Reiniciar búsqueda avanzada"
-                    class="btn btn-outline-secondary btn-sm"><i class="fa-solid fa-eraser"></i></button>
+                    class="btn btn-outline-secondary btn-sm">🧹</button>
             </div>
         </div>
     </div>
@@ -541,9 +541,9 @@ function userEditionRow(edition, user, results) {
         <td>
         <div class="btn-group">
             <button title="Cambia nota y/o valoración para ${user.name} en ${edition.name}" 
-                class="set-result btn btn-outline-secondary btn-sm"><i class="fa-solid fa-pen"></i></button>
+                class="set-result btn btn-outline-secondary btn-sm">✏️</button>
             <button title="Saca a ${user.name} de ${edition.name}" 
-                class="rm-from-edition btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
         </div>
         </td>
     </tr>
@@ -582,7 +582,7 @@ export function createDetailsForUser(user) {
     <div class="row">
         <div class="col md-auto input-group">
             <input id="search-in-user-editions-input${user.id}" type="search" class="form-control" placeholder="Filtrar" />
-            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <span class="input-group-text">🔍</span>
         </div>
     </div>
 

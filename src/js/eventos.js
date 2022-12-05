@@ -177,7 +177,6 @@ export function removeSelCards() {
     p.innerHTML = V.deleteMessageModal(" la selección ");
     const acceptButton = U.one("#acceptDelete");
     const acceptListener = ae => {
-        const token = C.save();
         U.all('.user-card').forEach(c => {
             if (Array.from(c.classList).filter(cla => cla === 'selectAnimation').length != 0) {
                 const id = c.dataset.id;
@@ -186,16 +185,6 @@ export function removeSelCards() {
                 U.one('#selectedOptions').style.display = 'none';
             }
         });
-
-        const generatedId = U.randomString(20);
-        U.add("#containerParaToast",V.toastMessage("Se ha borrado la seleccion ", generatedId));
-        const t = new bootstrap.Toast(document.querySelector("#miToast" + generatedId));
-        U.one("#toastButton" + generatedId).addEventListener("click", e=>{
-            C.restore(token);
-            t.hide();
-        });
-        t.show();
-        acceptButton.removeEventListener("click", acceptListener);
         C.modalDelete.hide();
     };
     acceptButton.addEventListener("click", acceptListener);
@@ -276,14 +265,12 @@ function bindMinEdition(idDiv, id) {
 export function bindRmFromEdition(clickSelector, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
-       
         const p = U.one("#modalEliminar");
         console.log(Cm.resolve(e.target.closest('tr').dataset.userId).name);
         const userName = Cm.resolve(e.target.closest('tr').dataset.userId).name;
         p.innerHTML = V.deleteMessageModal( userName + " de " + Cm.resolve(e.target.closest('tr').dataset.editionId).name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
-            const token = C.save();
             const userId = e.target.closest('tr').dataset.userId;
             const editionId = e.target.closest('tr').dataset.editionId;
             console.log(e, userId, editionId);
@@ -294,10 +281,11 @@ export function bindRmFromEdition(clickSelector, callback) {
             e.target.closest("tr").remove();
             C.modalDelete.hide();
             
+            const token = Cm.saveState();
             U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + userName, userId));
             const t = new bootstrap.Toast(document.querySelector("#miToast" + userId));
             U.one("#toastButton" + userId).addEventListener("click", e=>{
-                C.restore(token);
+                Cm.restoreState(token);
                 t.hide();
             });
             t.show();
@@ -312,25 +300,13 @@ export function bindRmEditionDetails(clickSelector, callback) {
     U.one(clickSelector).addEventListener('click', e => {
         C.modalDelete.show();
         const p = U.one("#modalEliminar");
-        const name = Cm.resolve(e.target.dataset.id).name;
-        p.innerHTML = V.deleteMessageModal(name);
+        p.innerHTML = V.deleteMessageModal(Cm.resolve(e.target.dataset.id).name);
         const acceptButton = U.one("#acceptDelete");
         const acceptListener = ae => {
-            const token = C.save();
             const id = e.target.dataset.id;
             console.log(e, id);
             Cm.rmEdition(id);
             C.modalDelete.hide();
-
-            U.add("#containerParaToast",V.toastMessage("Se ha borrado la edicion " + name, id));
-            const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
-            U.one("#toastButton" + id).addEventListener("click", e=>{
-                C.restore(token);
-                t.hide();
-            });
-
-            t.show();
-            acceptButton.removeEventListener('click', acceptListener);
             callback();
         };
         acceptButton.addEventListener("click", acceptListener);
@@ -645,13 +621,13 @@ export function advancedUserFilter(filterSel, rowSel) {
         let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
 
         if (name !== '')
-            ok1 = (r.querySelector('.user-name').innerText.toLowerCase().indexOf(name) == -1) ? false : true;
+            ok1 = (r.querySelector('.user-name').innerText.toLowerCase().indexOf(name)) ? false : true;
         if (role !== '')
             ok2 = (r.querySelector('.user-role').innerText.toLowerCase().indexOf(role)) ? false : true;
         if (email !== '')
-            ok3 = (r.querySelector('.user-email').innerText.toLowerCase().indexOf(email) == -1) ? false : true;
+            ok3 = (r.querySelector('.user-email').innerText.toLowerCase().indexOf(email)) ? false : true;
         if (dni !== '') {
-            ok4 = (r.querySelector('.user-dni').innerText.toLowerCase().indexOf(dni) == -1) ? false : true;
+            ok4 = (r.querySelector('.user-dni').innerText.toLowerCase().indexOf(dni)) ? false : true;
         }
         let ok = (ok1 && ok2 && ok3 && ok4) ? true : false;
 
@@ -670,7 +646,7 @@ export function advancedCourseFilter(filterSel, rowSel) {
         let ok1 = true, ok2 = true, ok3 = true, ok4 = true;
 
         if (name !== '')
-            ok1 = (r.querySelector('.course-name').innerText.toLowerCase().indexOf(name) == -1) ? false : true;
+            ok1 = (r.querySelector('.course-name').innerText.toLowerCase().indexOf(name)) ? false : true;
         if (area !== '')
             ok2 = (r.querySelector('.course-area').innerText.toLowerCase().indexOf(area)) ? false : true;
         if (level !== '')
