@@ -301,7 +301,7 @@ export function bindRmFromEdition(clickSelector, callback) {
                 t.hide();
             });
             t.show();
-            
+            acceptButton.removeEventListener('click', acceptListener);
             callback();
         };
         acceptButton.addEventListener("click", acceptListener);
