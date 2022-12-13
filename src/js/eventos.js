@@ -364,7 +364,7 @@ export function bindRmCourseRow(clickSelector) {
             C.modalDelete.hide();
  
             
-            U.add("#containerParaToast",V.toastMessage("Se ha borrado al usuario " + name, id));
+            U.add("#containerParaToast",V.toastMessage("Se ha borrado el curso " + name, id));
             const t = new bootstrap.Toast(document.querySelector("#miToast" + id));
             U.one("#toastButton" + id).addEventListener("click", e=>{
                 C.restore(token);
