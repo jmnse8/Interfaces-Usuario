@@ -171,6 +171,8 @@ export function selectAllCard() {
 
 }
 
+// TO DO: Añadir al evento de click del botón de cancelar del modal
+//        la eliminación del evento de click del botón de aceptar.
 export function removeSelCards() {
     C.modalDelete.show();
     const p = U.one("#modalEliminar");
@@ -273,6 +275,8 @@ function bindMinEdition(idDiv, id) {
 }
 
 
+// TO DO: Añadir al evento de click del botón de cancelar del modal
+//        la eliminación del evento de click del botón de aceptar.
 export function bindRmFromEdition(clickSelector, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
@@ -308,6 +312,8 @@ export function bindRmFromEdition(clickSelector, callback) {
     }));
 }
 
+// TO DO: Añadir al evento de click del botón de cancelar del modal
+//        la eliminación del evento de click del botón de aceptar.
 export function bindRmEditionDetails(clickSelector, callback) {
     U.one(clickSelector).addEventListener('click', e => {
         C.modalDelete.show();
@@ -347,6 +353,8 @@ export function bindAddEditionToCourse(clickSelector, callback) {
     }));
 }
 
+// TO DO: Añadir al evento de click del botón de cancelar del modal
+//        la eliminación del evento de click del botón de aceptar.
 export function bindRmCourseRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
@@ -377,6 +385,8 @@ export function bindRmCourseRow(clickSelector) {
     }));
 }
 
+// TO DO: Añadir al evento de click del botón de cancelar del modal
+//        la eliminación del evento de click del botón de aceptar.
 export function bindRmUserRow(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         C.modalDelete.show();
